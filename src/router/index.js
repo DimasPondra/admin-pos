@@ -1,5 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+import Role from "./routes/roles";
+
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
 import GuestMiddleware from "../middleware/guest";
@@ -23,6 +25,7 @@ const router = createRouter({
                 middleware: [GuestMiddleware],
             },
         },
+        ...Role,
     ],
 });
 
