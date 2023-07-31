@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from "vue-router";
 
 import Role from "./routes/roles";
+import ProductType from "./routes/product-types";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -26,6 +27,7 @@ const router = createRouter({
             },
         },
         ...Role,
+        ...ProductType,
     ],
 });
 
