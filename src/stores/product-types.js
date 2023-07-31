@@ -3,6 +3,7 @@ import { reactive } from "vue";
 import { useAuthStore } from "./auth";
 import axios from "axios";
 import router from "../router";
+import { useAlertStore } from "./alerts";
 
 export const useProductTypeStore = defineStore("product-type", () => {
     const data = reactive({
@@ -14,7 +15,8 @@ export const useProductTypeStore = defineStore("product-type", () => {
         },
     });
 
-    const auth = useAuthStore();
+    const authStore = useAuthStore();
+    const alertStore = useAlertStore();
 
     const get = async () => {
         clear();
@@ -22,13 +24,13 @@ export const useProductTypeStore = defineStore("product-type", () => {
         try {
             const res = await axios.get("admin/product-types", {
                 headers: {
-                    Authorization: auth.token,
+                    Authorization: authStore.token,
                 },
             });
 
             data.product_types = res.data.data;
         } catch (error) {
-            console.log(error);
+            alertStore.handleError(error);
         }
     };
 
@@ -38,13 +40,13 @@ export const useProductTypeStore = defineStore("product-type", () => {
         try {
             const res = await axios.get(`admin/product-types/${id}/show`, {
                 headers: {
-                    Authorization: auth.token,
+                    Authorization: authStore.token,
                 },
             });
-            console.log(res.data.data);
+
             data.product_type = res.data.data;
         } catch (error) {
-            console.log(error);
+            alertStore.handleError(error);
         }
     };
 
@@ -53,21 +55,25 @@ export const useProductTypeStore = defineStore("product-type", () => {
             if (id == null) {
                 await axios.post("admin/product-types/store", data, {
                     headers: {
-                        Authorization: auth.token,
+                        Authorization: authStore.token,
                     },
                 });
+
+                alertStore.handleSuccess("successfully created.");
             } else {
                 await axios.patch(`admin/product-types/${id}/update`, data, {
                     headers: {
-                        Authorization: auth.token,
+                        Authorization: authStore.token,
                     },
                 });
+
+                alertStore.handleSuccess("successfully updated.");
             }
 
             clear();
             router.push("/product-types");
         } catch (error) {
-            console.log(error);
+            alertStore.handleError(error);
         }
     };
 
@@ -75,11 +81,13 @@ export const useProductTypeStore = defineStore("product-type", () => {
         try {
             await axios.delete(`admin/product-types/${id}/delete`, {
                 headers: {
-                    Authorization: auth.token,
+                    Authorization: authStore.token,
                 },
             });
+
+            alertStore.handleSuccess("successfully deleted.");
         } catch (error) {
-            console.log(error);
+            alertStore.handleError(error);
         }
     };
 
