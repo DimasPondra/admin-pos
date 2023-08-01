@@ -1,6 +1,9 @@
 <template>
     <div class="">
         <router-link to="/product-types/create">create</router-link>
+        <br /><br />
+        <input type="text" v-model="filter.name" placeholder="search name" />
+        <button @click="clearFilter">clear</button>
     </div>
     <br />
     <div v-for="product_type in productTypeStore.data.product_types" :key="product_type.id">
@@ -21,14 +24,30 @@
 
 <script>
 import { useProductTypeStore } from "../../stores/product-types";
-import { onMounted } from "vue";
+import { onMounted, reactive, computed, watch } from "vue";
 
 export default {
     setup() {
         const productTypeStore = useProductTypeStore();
+        const filter = reactive({
+            name: "",
+        });
+
+        const params = computed(() => {
+            return {
+                name: filter.name,
+            };
+        });
+
+        watch(
+            () => filter.name,
+            () => {
+                loadProductTypes();
+            }
+        );
 
         const loadProductTypes = async () => {
-            await productTypeStore.get();
+            await productTypeStore.get(params.value);
         };
 
         onMounted(() => {
@@ -40,7 +59,12 @@ export default {
             loadProductTypes();
         };
 
-        return { productTypeStore, handleDelete };
+        const clearFilter = () => {
+            filter.name = "";
+            loadProductTypes();
+        };
+
+        return { filter, productTypeStore, handleDelete, clearFilter };
     },
 };
 </script>

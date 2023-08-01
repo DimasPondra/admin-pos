@@ -18,11 +18,12 @@ export const useProductTypeStore = defineStore("product-type", () => {
     const authStore = useAuthStore();
     const alertStore = useAlertStore();
 
-    const get = async () => {
+    const get = async (params) => {
         clear();
 
         try {
             const res = await axios.get("admin/product-types", {
+                params: params,
                 headers: {
                     Authorization: authStore.token,
                 },
