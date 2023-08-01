@@ -25,13 +25,7 @@
         <br />
     </div>
 
-    <pagination
-        v-model="productTypeStore.data.pagination.page"
-        :records="productTypeStore.data.pagination.total"
-        :per-page="productTypeStore.data.pagination.per_page"
-        @paginate="changePage($event)"
-        :options="productTypeStore.data.pagination.option"
-    />
+    <Pagination :pagination="productTypeStore.data.pagination" @current_page="changePage" />
 </template>
 
 <script>
@@ -39,8 +33,12 @@ import { useProductTypeStore } from "../../stores/product-types";
 import { onMounted, reactive, computed, watch } from "vue";
 import "@popperjs/core";
 import "bootstrap/dist/js/bootstrap.bundle";
+import Pagination from "../../components/Pagination.vue";
 
 export default {
+    components: {
+        Pagination,
+    },
     setup() {
         const productTypeStore = useProductTypeStore();
         const filter = reactive({
