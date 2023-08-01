@@ -18,6 +18,16 @@ export const useProductStore = defineStore("product", () => {
             product_type_id: null,
             product_type: {},
         },
+        pagination: {
+            page: 1,
+            total: 0,
+            per_page: 10,
+            option: {
+                chunk: 3,
+                chunksNavigation: "scroll",
+                hideCount: true,
+            },
+        },
     });
 
     const alertStore = useAlertStore();
@@ -35,6 +45,12 @@ export const useProductStore = defineStore("product", () => {
             });
 
             data.products = res.data.data;
+
+            if (res.data.meta != null) {
+                data.pagination.page = res.data.meta.current_page;
+                data.pagination.total = res.data.meta.total;
+                data.pagination.per_page = res.data.meta.per_page;
+            }
         } catch (error) {
             alertStore.handleError(error);
         }

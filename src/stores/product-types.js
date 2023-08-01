@@ -16,7 +16,7 @@ export const useProductTypeStore = defineStore("product-type", () => {
         pagination: {
             page: 1,
             total: 0,
-            per_page: 1,
+            per_page: 10,
             option: {
                 chunk: 3,
                 chunksNavigation: "scroll",

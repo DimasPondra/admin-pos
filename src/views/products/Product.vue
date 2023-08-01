@@ -30,14 +30,20 @@
         </div>
         <br />
     </div>
+
+    <Pagination :pagination="productStore.data.pagination" @current_page="changePage" />
 </template>
 
 <script>
 import { useProductTypeStore } from "../../stores/product-types";
 import { useProductStore } from "../../stores/products";
 import { onMounted, computed, reactive, watch } from "vue";
+import Pagination from "../../components/Pagination.vue";
 
 export default {
+    components: {
+        Pagination,
+    },
     setup() {
         const productStore = useProductStore();
         const productTypeStore = useProductTypeStore();
@@ -51,24 +57,28 @@ export default {
                 name: filter.name,
                 product_type_id: filter.product_type_id,
                 include: "product_type",
+                page: productStore.data.pagination.page,
+                per_page: productStore.data.pagination.per_page,
             };
         });
 
         watch(
             () => filter.name,
             () => {
-                loadProducts();
+                loadProducts(1);
             }
         );
 
         watch(
             () => filter.product_type_id,
             () => {
-                loadProducts();
+                loadProducts(1);
             }
         );
 
-        const loadProducts = async () => {
+        const loadProducts = async (value) => {
+            params.value.page = value != null ? value : params.value.page;
+
             await productStore.get(params.value);
         };
 
@@ -83,16 +93,20 @@ export default {
 
         const handleDelete = async (id) => {
             await productStore.deleteItem(id);
-            loadProducts();
+            loadProducts(1);
         };
 
         const clearFilter = () => {
             filter.name = "";
             filter.product_type_id = null;
-            loadProducts();
+            loadProducts(1);
         };
 
-        return { filter, productStore, productTypeStore, handleDelete, clearFilter };
+        const changePage = async (value) => {
+            await loadProducts(value);
+        };
+
+        return { filter, productStore, productTypeStore, handleDelete, clearFilter, changePage };
     },
 };
 </script>
