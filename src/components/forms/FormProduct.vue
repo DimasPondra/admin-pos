@@ -47,25 +47,38 @@
 </template>
 
 <script>
+import { useRoute } from "vue-router";
 import { useProductTypeStore } from "../../stores/product-types";
 import { useProductStore } from "../../stores/products";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 
 export default {
     setup() {
         const productStore = useProductStore();
         const productTypeStore = useProductTypeStore();
+        const route = useRoute();
+
+        const params = computed(() => {
+            return { include: "product_type" };
+        });
 
         const handleSubmit = async () => {
-            await productStore.save(productStore.data.product);
+            await productStore.save(productStore.data.product, route.params.id);
         };
 
         const loadProductTypes = async () => {
             await productTypeStore.get();
         };
 
+        const loadProduct = async () => {
+            await productStore.show(route.params.id, params.value);
+        };
+
         onMounted(() => {
             loadProductTypes();
+            if (route.params.id != undefined) {
+                loadProduct();
+            }
         });
 
         return { productStore, productTypeStore, handleSubmit };

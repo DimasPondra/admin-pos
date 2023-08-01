@@ -9,11 +9,11 @@
             <br />
             {{ product.slug }}
             <br />
-            <!-- <router-link :to="`product-types/${product.id}/edit`">edit</router-link>
+            <router-link :to="`products/${product.id}/edit`">edit</router-link>
             <br />
             <button onclick="return confirm('Are you sure to delete?')" @click="handleDelete(product.id)">
                 delete
-            </button> -->
+            </button>
         </div>
         <br />
     </div>
@@ -35,7 +35,12 @@ export default {
             loadProducts();
         });
 
-        return { productStore };
+        const handleDelete = async (id) => {
+            await productStore.deleteItem(id);
+            loadProducts();
+        };
+
+        return { productStore, handleDelete };
     },
 };
 </script>

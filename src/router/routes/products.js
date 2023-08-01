@@ -17,4 +17,12 @@ export default [
             middleware: [AuthMiddleware],
         },
     },
+    {
+        path: "/products/:id/edit",
+        name: "edit-product",
+        component: () => import("../../views/products/EditProduct.vue"),
+        meta: {
+            middleware: [AuthMiddleware],
+        },
+    },
 ];

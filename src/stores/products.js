@@ -16,6 +16,7 @@ export const useProductStore = defineStore("product", () => {
             price: 0,
             amount: 0,
             product_type_id: null,
+            product_type: {},
         },
     });
 
@@ -38,17 +39,60 @@ export const useProductStore = defineStore("product", () => {
         }
     };
 
-    const save = async (data) => {
+    const show = async (id, params) => {
+        clear();
+
         try {
-            await axios.post("admin/products/store", data, {
+            const res = await axios.get(`admin/products/${id}/show`, {
+                params: params,
                 headers: {
                     Authorization: authStore.token,
                 },
             });
 
-            alertStore.handleSuccess("successfully created.");
+            data.product = res.data.data;
+            data.product.product_type_id = res.data.data.product_type.id;
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
+    const save = async (data, id) => {
+        try {
+            if (id == null) {
+                await axios.post("admin/products/store", data, {
+                    headers: {
+                        Authorization: authStore.token,
+                    },
+                });
+
+                alertStore.handleSuccess("successfully created.");
+            } else {
+                await axios.patch(`admin/products/${id}/update`, data, {
+                    headers: {
+                        Authorization: authStore.token,
+                    },
+                });
+
+                alertStore.handleSuccess("successfully updated.");
+            }
+
             clear();
             router.push("/products");
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
+    const deleteItem = async (id) => {
+        try {
+            await axios.delete(`admin/products/${id}/delete`, {
+                headers: {
+                    Authorization: authStore.token,
+                },
+            });
+
+            alertStore.handleSuccess("successfully deleted.");
         } catch (error) {
             alertStore.handleError(error);
         }
@@ -62,7 +106,8 @@ export const useProductStore = defineStore("product", () => {
         data.product.price = 0;
         data.product.amount = 0;
         data.product.product_type_id = null;
+        data.product.product_type = {};
     };
 
-    return { data, get, save };
+    return { data, get, show, save, deleteItem };
 });
