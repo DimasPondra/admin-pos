@@ -14,17 +14,31 @@
             <br />
             <router-link :to="`product-types/${product_type.id}/edit`">edit</router-link>
             <br />
-            <button onclick="return confirm('Are you sure to delete?')" @click="handleDelete(product_type.id)">
+            <button
+                class="btn btn-sm btn-danger"
+                onclick="return confirm('Are you sure to delete?')"
+                @click="handleDelete(product_type.id)"
+            >
                 delete
             </button>
         </div>
         <br />
     </div>
+
+    <pagination
+        v-model="productTypeStore.data.pagination.page"
+        :records="productTypeStore.data.pagination.total"
+        :per-page="productTypeStore.data.pagination.per_page"
+        @paginate="changePage($event)"
+        :options="productTypeStore.data.pagination.option"
+    />
 </template>
 
 <script>
 import { useProductTypeStore } from "../../stores/product-types";
 import { onMounted, reactive, computed, watch } from "vue";
+import "@popperjs/core";
+import "bootstrap/dist/js/bootstrap.bundle";
 
 export default {
     setup() {
@@ -36,17 +50,21 @@ export default {
         const params = computed(() => {
             return {
                 name: filter.name,
+                page: productTypeStore.data.pagination.page,
+                per_page: productTypeStore.data.pagination.per_page,
             };
         });
 
         watch(
             () => filter.name,
             () => {
-                loadProductTypes();
+                loadProductTypes(1);
             }
         );
 
-        const loadProductTypes = async () => {
+        const loadProductTypes = async (value) => {
+            params.value.page = value != null ? value : params.value.page;
+
             await productTypeStore.get(params.value);
         };
 
@@ -56,15 +74,19 @@ export default {
 
         const handleDelete = async (id) => {
             await productTypeStore.deleteItem(id);
-            loadProductTypes();
+            loadProductTypes(1);
         };
 
         const clearFilter = () => {
             filter.name = "";
-            loadProductTypes();
+            loadProductTypes(1);
         };
 
-        return { filter, productTypeStore, handleDelete, clearFilter };
+        const changePage = async (value) => {
+            await loadProductTypes(value);
+        };
+
+        return { filter, productTypeStore, handleDelete, clearFilter, changePage };
     },
 };
 </script>

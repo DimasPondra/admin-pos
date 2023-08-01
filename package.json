@@ -8,10 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@popperjs/core": "^2.11.8",
     "axios": "^1.4.0",
+    "bootstrap": "^5.3.1",
     "pinia": "^2.1.4",
     "pinia-plugin-persistedstate": "^3.2.0",
     "secure-ls": "^1.2.6",
+    "v-pagination-3": "^0.1.7",
     "vue": "^3.3.4",
     "vue-route-middleware": "^1.0.7",
     "vue-router": "^4.2.4",
