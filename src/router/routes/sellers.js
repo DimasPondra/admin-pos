@@ -9,4 +9,12 @@ export default [
             middleware: [AuthMiddleware],
         },
     },
+    {
+        path: "/sellers/create",
+        name: "create-seller",
+        component: () => import("../../views/sellers/CreateSeller.vue"),
+        meta: {
+            middleware: [AuthMiddleware],
+        },
+    },
 ];

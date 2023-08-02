@@ -3,6 +3,7 @@ import { reactive } from "vue";
 import { useAlertStore } from "./alerts";
 import { useAuthStore } from "./auth";
 import axios from "axios";
+import router from "../router";
 
 export const useSellerStore = defineStore("seller", () => {
     const data = reactive({
@@ -48,5 +49,21 @@ export const useSellerStore = defineStore("seller", () => {
         }
     };
 
-    return { data, get };
+    const save = async (data) => {
+        try {
+            await axios.post("admin/sellers/store", data, {
+                headers: {
+                    Authorization: authStore.token,
+                },
+            });
+
+            alertStore.handleSuccess("successfully created.");
+
+            router.push("/sellers");
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
+    return { data, get, save };
 });

@@ -1,7 +1,7 @@
 <template>
     <div class="">
-        <!-- <router-link to="/product-types/create">create</router-link>
-        <br /><br /> -->
+        <router-link to="/sellers/create">create</router-link>
+        <br /><br />
         <input type="text" v-model="filter.name" placeholder="search name" />
         <button @click="clearFilter">clear</button>
     </div>
