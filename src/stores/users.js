@@ -15,22 +15,39 @@ export const useUserStore = defineStore("user", () => {
             role_id: null,
             file_id: null,
         },
+        pagination: {
+            page: 1,
+            total: 0,
+            per_page: 10,
+            option: {
+                chunk: 3,
+                chunksNavigation: "scroll",
+                hideCount: true,
+            },
+        },
     });
 
     const authStore = useAuthStore();
     const alertStore = useAlertStore();
 
-    const get = async () => {
+    const get = async (params) => {
         clear();
 
         try {
             const res = await axios.get("admin/users", {
+                params: params,
                 headers: {
                     Authorization: authStore.token,
                 },
             });
 
             data.users = res.data.data;
+
+            if (res.data.meta != null) {
+                data.pagination.page = res.data.meta.current_page;
+                data.pagination.total = res.data.meta.total;
+                data.pagination.per_page = res.data.meta.per_page;
+            }
         } catch (error) {
             alertStore.handleError(error);
         }
