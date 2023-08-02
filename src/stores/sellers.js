@@ -29,6 +29,8 @@ export const useSellerStore = defineStore("seller", () => {
     const alertStore = useAlertStore();
 
     const get = async (params) => {
+        clear();
+
         try {
             const res = await axios.get("admin/sellers", {
                 params: params,
@@ -59,11 +61,32 @@ export const useSellerStore = defineStore("seller", () => {
 
             alertStore.handleSuccess("successfully created.");
 
+            clear();
             router.push("/sellers");
         } catch (error) {
             alertStore.handleError(error);
         }
     };
 
-    return { data, get, save };
+    const deleteItem = async (id) => {
+        try {
+            await axios.delete(`admin/sellers/${id}/delete`, {
+                headers: {
+                    Authorization: authStore.token,
+                },
+            });
+
+            alertStore.handleSuccess("successfully deleted.");
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
+    const clear = () => {
+        data.seller.id = null;
+        data.seller.name = "";
+        data.seller.slug = "";
+    };
+
+    return { data, get, save, deleteItem };
 });

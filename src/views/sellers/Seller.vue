@@ -13,14 +13,14 @@
             {{ seller.slug }}
             <br />
             <!-- <router-link :to="`product-types/${seller.id}/edit`">edit</router-link>
-            <br />
+            <br /> -->
             <button
                 class="btn btn-sm btn-danger"
                 onclick="return confirm('Are you sure to delete?')"
                 @click="handleDelete(seller.id)"
             >
                 delete
-            </button> -->
+            </button>
         </div>
         <br />
     </div>
@@ -68,6 +68,11 @@ export default {
             loadSellers();
         });
 
+        const handleDelete = async (id) => {
+            await sellerStore.deleteItem(id);
+            loadSellers(1);
+        };
+
         const clearFilter = () => {
             filter.name = "";
         };
@@ -76,7 +81,7 @@ export default {
             await loadSellers(value);
         };
 
-        return { sellerStore, filter, clearFilter, changePage };
+        return { sellerStore, handleDelete, filter, clearFilter, changePage };
     },
 };
 </script>
