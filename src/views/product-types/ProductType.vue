@@ -77,14 +77,13 @@ export default {
 
         const clearFilter = () => {
             filter.name = "";
-            loadProductTypes(1);
         };
 
         const changePage = async (value) => {
             await loadProductTypes(value);
         };
 
-        return { filter, productTypeStore, handleDelete, clearFilter, changePage };
+        return { productTypeStore, handleDelete, filter, clearFilter, changePage };
     },
 };
 </script>

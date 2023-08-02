@@ -63,17 +63,11 @@ export default {
         });
 
         watch(
-            () => filter.name,
+            () => filter,
             () => {
                 loadProducts(1);
-            }
-        );
-
-        watch(
-            () => filter.product_type_id,
-            () => {
-                loadProducts(1);
-            }
+            },
+            { deep: true }
         );
 
         const loadProducts = async (value) => {
@@ -99,14 +93,13 @@ export default {
         const clearFilter = () => {
             filter.name = "";
             filter.product_type_id = null;
-            loadProducts(1);
         };
 
         const changePage = async (value) => {
             await loadProducts(value);
         };
 
-        return { filter, productStore, productTypeStore, handleDelete, clearFilter, changePage };
+        return { productStore, productTypeStore, handleDelete, filter, clearFilter, changePage };
     },
 };
 </script>
