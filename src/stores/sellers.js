@@ -51,15 +51,41 @@ export const useSellerStore = defineStore("seller", () => {
         }
     };
 
-    const save = async (data) => {
+    const show = async (id) => {
+        clear();
+
         try {
-            await axios.post("admin/sellers/store", data, {
+            const res = await axios.get(`admin/sellers/${id}/show`, {
                 headers: {
                     Authorization: authStore.token,
                 },
             });
 
-            alertStore.handleSuccess("successfully created.");
+            data.seller = res.data.data;
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
+    const save = async (data, id) => {
+        try {
+            if (id == null) {
+                await axios.post("admin/sellers/store", data, {
+                    headers: {
+                        Authorization: authStore.token,
+                    },
+                });
+
+                alertStore.handleSuccess("successfully created.");
+            } else {
+                await axios.patch(`admin/sellers/${id}/update`, data, {
+                    headers: {
+                        Authorization: authStore.token,
+                    },
+                });
+
+                alertStore.handleSuccess("successfully updated.");
+            }
 
             clear();
             router.push("/sellers");
@@ -88,5 +114,5 @@ export const useSellerStore = defineStore("seller", () => {
         data.seller.slug = "";
     };
 
-    return { data, get, save, deleteItem };
+    return { data, get, show, save, deleteItem };
 });

@@ -12,8 +12,8 @@
             <br />
             {{ seller.slug }}
             <br />
-            <!-- <router-link :to="`product-types/${seller.id}/edit`">edit</router-link>
-            <br /> -->
+            <router-link :to="`sellers/${seller.id}/edit`">edit</router-link>
+            <br />
             <button
                 class="btn btn-sm btn-danger"
                 onclick="return confirm('Are you sure to delete?')"
