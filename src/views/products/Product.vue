@@ -1,52 +1,49 @@
 <template>
-    <div>
-        <router-link to="/products/create">create</router-link>
-        <br /><br />
-        <input type="text" v-model="filter.name" placeholder="search name" />
-        <select id="product_type_id" v-model="filter.product_type_id">
-            <option :value="null" selected disabled>Choose</option>
-            <option
-                v-for="product_type in productTypeStore.data.product_types"
-                :key="product_type.id"
-                :value="product_type.id"
-            >
-                {{ product_type.name }}
-            </option>
-        </select>
-        <button @click="clearFilter">clear</button>
-    </div>
-    <br />
-    <div v-for="product in productStore.data.products" :key="product.id">
-        <div>
-            {{ product.name }}
-            <br />
-            {{ product.slug }}
-            <br />
-            <router-link :to="`products/${product.id}/edit`">edit</router-link>
-            <br />
-            <button onclick="return confirm('Are you sure to delete?')" @click="handleDelete(product.id)">
-                delete
-            </button>
-        </div>
-        <br />
-    </div>
+    <div class="row">
+        <TittlePage :title="title" />
 
-    <Pagination :pagination="productStore.data.pagination" @current_page="changePage" />
+        <FilterProduct
+            :filter="filter"
+            :product_types="productTypeStore.data.product_types"
+            @clear_filter="clearFilter"
+        />
+
+        <div class="col-12">
+            <div class="statistics-card">
+                <div class="table-responsive">
+                    <TableProduct :products="productStore.data.products" @delete_product="handleDelete" />
+
+                    <Pagination :pagination="productStore.data.pagination" @current_page="changePage" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { useProductTypeStore } from "../../stores/product-types";
 import { useProductStore } from "../../stores/products";
 import { onMounted, computed, reactive, watch } from "vue";
+
+import FilterProduct from "../../components/filters/FilterProduct.vue";
 import Pagination from "../../components/Pagination.vue";
+import TableProduct from "../../components/tables/TableProduct.vue";
+import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        FilterProduct,
         Pagination,
+        TableProduct,
+        TittlePage,
     },
     setup() {
         const productStore = useProductStore();
         const productTypeStore = useProductTypeStore();
+        const title = reactive({
+            name: "Product",
+            link_create: "/products/create",
+        });
         const filter = reactive({
             name: "",
             product_type_id: null,
@@ -99,7 +96,7 @@ export default {
             await loadProducts(value);
         };
 
-        return { productStore, productTypeStore, handleDelete, filter, clearFilter, changePage };
+        return { productStore, productTypeStore, handleDelete, title, filter, clearFilter, changePage };
     },
 };
 </script>
