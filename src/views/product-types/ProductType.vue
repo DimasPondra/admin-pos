@@ -1,46 +1,46 @@
 <template>
-    <div class="">
-        <router-link to="/product-types/create">create</router-link>
-        <br /><br />
-        <input type="text" v-model="filter.name" placeholder="search name" />
-        <button @click="clearFilter">clear</button>
-    </div>
-    <br />
-    <div v-for="product_type in productTypeStore.data.product_types" :key="product_type.id">
-        <div>
-            {{ product_type.name }}
-            <br />
-            {{ product_type.slug }}
-            <br />
-            <router-link :to="`product-types/${product_type.id}/edit`">edit</router-link>
-            <br />
-            <button
-                class="btn btn-sm btn-danger"
-                onclick="return confirm('Are you sure to delete?')"
-                @click="handleDelete(product_type.id)"
-            >
-                delete
-            </button>
-        </div>
-        <br />
-    </div>
+    <div class="row">
+        <TittlePage :title="title" />
 
-    <Pagination :pagination="productTypeStore.data.pagination" @current_page="changePage" />
+        <FilterProductType :filter="filter" @clear_filter="clearFilter" />
+
+        <div class="col-12">
+            <div class="statistics-card">
+                <div class="table-responsive">
+                    <TableProductType
+                        :product_types="productTypeStore.data.product_types"
+                        @delete_product_type="handleDelete"
+                    />
+
+                    <Pagination :pagination="productTypeStore.data.pagination" @current_page="changePage" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { useProductTypeStore } from "../../stores/product-types";
 import { onMounted, reactive, computed, watch } from "vue";
-import "@popperjs/core";
-import "bootstrap/dist/js/bootstrap.bundle";
+
+import FilterProductType from "../../components/filters/FilterProductType.vue";
 import Pagination from "../../components/Pagination.vue";
+import TableProductType from "../../components/tables/TableProductType.vue";
+import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        FilterProductType,
         Pagination,
+        TableProductType,
+        TittlePage,
     },
     setup() {
         const productTypeStore = useProductTypeStore();
+        const title = reactive({
+            name: "Product Type",
+            link_create: "/product-types/create",
+        });
         const filter = reactive({
             name: "",
         });
@@ -83,7 +83,7 @@ export default {
             await loadProductTypes(value);
         };
 
-        return { productTypeStore, handleDelete, filter, clearFilter, changePage };
+        return { productTypeStore, handleDelete, title, filter, clearFilter, changePage };
     },
 };
 </script>

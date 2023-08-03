@@ -1,41 +1,45 @@
 <template>
-    <div>
-        <router-link to="/users/create">create</router-link>
-        <br /><br />
-        <input type="text" v-model="filter.username" placeholder="search username" />
-        <select id="role_id" v-model="filter.role_id">
-            <option :value="null" selected disabled>Choose</option>
-            <option v-for="role in roleStore.data.roles" :key="role.id" :value="role.id">{{ role.name }}</option>
-        </select>
-        <button @click="clearFilter">clear</button>
-    </div>
-    <br />
-    <div v-for="user in userStore.data.users" :key="user.id">
-        <div>
-            {{ user.username }}
-            <br />
-            <router-link :to="`users/${user.id}/edit`">edit</router-link>
-            <br />
-        </div>
-        <br />
-    </div>
+    <div class="row">
+        <TittlePage :title="title" />
 
-    <Pagination :pagination="userStore.data.pagination" @current_page="changePage" />
+        <FilterUser :filter="filter" :roles="roleStore.data.roles" @clear_filter="clearFilter" />
+
+        <div class="col-12">
+            <div class="statistics-card">
+                <div class="table-responsive">
+                    <TableUser :users="userStore.data.users" />
+
+                    <Pagination :pagination="userStore.data.pagination" @current_page="changePage" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { useRoleStore } from "../../stores/roles";
 import { useUserStore } from "../../stores/users";
 import { onMounted, reactive, computed, watch } from "vue";
+
+import FilterUser from "../../components/filters/FilterUser.vue";
 import Pagination from "../../components/Pagination.vue";
+import TableUser from "../../components/tables/TableUser.vue";
+import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        FilterUser,
         Pagination,
+        TableUser,
+        TittlePage,
     },
     setup() {
         const userStore = useUserStore();
         const roleStore = useRoleStore();
+        const title = reactive({
+            name: "User",
+            link_create: "/users/create",
+        });
         const filter = reactive({
             username: "",
             role_id: null,
@@ -83,7 +87,7 @@ export default {
             await loadUsers(value);
         };
 
-        return { userStore, roleStore, filter, clearFilter, changePage };
+        return { userStore, roleStore, title, filter, clearFilter, changePage };
     },
 };
 </script>

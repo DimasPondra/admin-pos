@@ -1,44 +1,43 @@
 <template>
-    <div class="">
-        <router-link to="/sellers/create">create</router-link>
-        <br /><br />
-        <input type="text" v-model="filter.name" placeholder="search name" />
-        <button @click="clearFilter">clear</button>
-    </div>
-    <br />
-    <div v-for="seller in sellerStore.data.sellers" :key="seller.id">
-        <div>
-            {{ seller.name }}
-            <br />
-            {{ seller.slug }}
-            <br />
-            <router-link :to="`sellers/${seller.id}/edit`">edit</router-link>
-            <br />
-            <button
-                class="btn btn-sm btn-danger"
-                onclick="return confirm('Are you sure to delete?')"
-                @click="handleDelete(seller.id)"
-            >
-                delete
-            </button>
-        </div>
-        <br />
-    </div>
+    <div class="row">
+        <TittlePage :title="title" />
 
-    <Pagination :pagination="sellerStore.data.pagination" @current_page="changePage" />
+        <FilterSeller :filter="filter" @clear_filter="clearFilter" />
+
+        <div class="col-12">
+            <div class="statistics-card">
+                <div class="table-responsive">
+                    <TableSeller :sellers="sellerStore.data.sellers" @delete_seller="handleDelete" />
+
+                    <Pagination :pagination="sellerStore.data.pagination" @current_page="changePage" />
+                </div>
+            </div>
+        </div>
+    </div>
 </template>
 
 <script>
 import { useSellerStore } from "../../stores/sellers";
 import { onMounted, reactive, computed, watch } from "vue";
+
+import FilterSeller from "../../components/filters/FilterSeller.vue";
 import Pagination from "../../components/Pagination.vue";
+import TableSeller from "../../components/tables/TableSeller.vue";
+import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        FilterSeller,
         Pagination,
+        TableSeller,
+        TittlePage,
     },
     setup() {
         const sellerStore = useSellerStore();
+        const title = reactive({
+            name: "Seller",
+            link_create: "/sellers/create",
+        });
         const filter = reactive({
             name: "",
         });
@@ -81,7 +80,7 @@ export default {
             await loadSellers(value);
         };
 
-        return { sellerStore, handleDelete, filter, clearFilter, changePage };
+        return { sellerStore, handleDelete, title, filter, clearFilter, changePage };
     },
 };
 </script>
