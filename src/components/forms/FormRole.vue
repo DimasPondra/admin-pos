@@ -20,13 +20,13 @@ export default {
         const roleStore = useRoleStore();
         const route = useRoute();
 
-        async function handleSubmit() {
+        const handleSubmit = async () => {
             await roleStore.save(roleStore.data.role, route.params.id);
-        }
+        };
 
-        async function loadRole() {
+        const loadRole = async () => {
             await roleStore.show(route.params.id);
-        }
+        };
 
         onMounted(() => {
             if (route.params.id != undefined) {
