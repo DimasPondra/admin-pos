@@ -52,17 +52,19 @@ export const useSalaryStore = defineStore("salary", () => {
         }
     };
 
-    const show = async (id) => {
+    const show = async (id, params) => {
         clear();
 
         try {
             const res = await axios.get(`admin/salaries/${id}/show`, {
+                params: params,
                 headers: {
                     Authorization: authStore.token,
                 },
             });
 
             data.salary = res.data.data;
+            data.salary.role_id = res.data.data.role.id;
         } catch (error) {
             alertStore.handleError(error);
         }

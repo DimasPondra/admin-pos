@@ -18,7 +18,7 @@
 <script>
 import { useRoute } from "vue-router";
 import { useSalaryStore } from "../../stores/salaries";
-import { onMounted } from "vue";
+import { onMounted, computed } from "vue";
 import { useRoleStore } from "../../stores/roles";
 
 export default {
@@ -26,6 +26,12 @@ export default {
         const salaryStore = useSalaryStore();
         const roleStore = useRoleStore();
         const route = useRoute();
+
+        const params = computed(() => {
+            return {
+                include: "role",
+            };
+        });
 
         const handleSubmit = async () => {
             await salaryStore.save(salaryStore.data.salary, route.params.id);
@@ -36,7 +42,7 @@ export default {
         };
 
         const loadSalary = async () => {
-            await salaryStore.show(route.params.id);
+            await salaryStore.show(route.params.id, params.value);
         };
 
         onMounted(() => {

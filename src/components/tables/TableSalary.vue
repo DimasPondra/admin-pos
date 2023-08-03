@@ -21,13 +21,13 @@
                             aria-expanded="false"
                         ></button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenu">
-                            <!-- <li>
+                            <li>
                                 <router-link
                                     :to="`salaries/${salary.id}/edit`"
                                     class="btn btn-sm btn-link w-100 text-start"
                                     >Edit</router-link
                                 >
-                            </li> -->
+                            </li>
                             <li>
                                 <button
                                     onclick="return confirm('Are you sure to delete?')"

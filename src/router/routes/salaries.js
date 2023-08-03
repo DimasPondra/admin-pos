@@ -17,4 +17,12 @@ export default [
             middleware: [AuthMiddleware],
         },
     },
+    {
+        path: "/salaries/:id/edit",
+        name: "edit-salary",
+        component: () => import("../../views/salaries/EditSalary.vue"),
+        meta: {
+            middleware: [AuthMiddleware],
+        },
+    },
 ];
