@@ -5,6 +5,7 @@ import ProductType from "./routes/product-types";
 import User from "./routes/users";
 import Product from "./routes/products";
 import Seller from "./routes/sellers";
+import Salary from "./routes/salaries";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -34,6 +35,7 @@ const router = createRouter({
         ...User,
         ...Product,
         ...Seller,
+        ...Salary,
     ],
 });
 
