@@ -35,6 +35,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             if (route.params.id != undefined) {
                 loadProductType();
             }

@@ -19,9 +19,37 @@ import Pagination from "v-pagination-3";
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
-import { faHouse, faTag, faXmark, faBars, faStore } from "@fortawesome/free-solid-svg-icons";
+import {
+    faHouse,
+    faTag,
+    faXmark,
+    faBars,
+    faStore,
+    faShop,
+    faUserShield,
+    faUser,
+    faDollarSign,
+    faListCheck,
+    faPercent,
+    faReceipt,
+    faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
-library.add(faHouse, faTag, faXmark, faBars, faStore);
+library.add(
+    faHouse,
+    faTag,
+    faXmark,
+    faBars,
+    faStore,
+    faShop,
+    faUserShield,
+    faUser,
+    faDollarSign,
+    faListCheck,
+    faPercent,
+    faReceipt,
+    faArrowRightFromBracket
+);
 
 const app = createApp(App);
 const pinia = createPinia();

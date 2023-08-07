@@ -38,12 +38,75 @@
                 <font-awesome-icon icon="fa-solid fa-store" />
                 <span>Product</span>
             </router-link>
+
+            <router-link to="/sellers" class="sidebar-item" :class="route.meta.name_page == 'sellers' ? 'active' : ''">
+                <font-awesome-icon icon="fa-solid fa-shop" />
+                <span>Seller</span>
+            </router-link>
+
+            <h5 class="sidebar-title">User</h5>
+
+            <router-link to="/roles" class="sidebar-item" :class="route.meta.name_page == 'roles' ? 'active' : ''">
+                <font-awesome-icon icon="fa-solid fa-user-shield" />
+                <span>Role</span>
+            </router-link>
+
+            <router-link to="/users" class="sidebar-item" :class="route.meta.name_page == 'users' ? 'active' : ''">
+                <font-awesome-icon icon="fa-solid fa-user" />
+                <span>User</span>
+            </router-link>
+
+            <router-link
+                to="/salaries"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'salaries' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-dollar-sign" />
+                <span>Salary</span>
+            </router-link>
+
+            <h5 class="sidebar-title">Setting</h5>
+
+            <router-link
+                to="/expense-types"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'expense-types' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-list-check" />
+                <span>Expense Type</span>
+            </router-link>
+
+            <router-link
+                to="/unit-types"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'unit-types' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-percent" />
+                <span>Unit Type</span>
+            </router-link>
+
+            <router-link
+                to="/payroll-settings"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'payroll-settings' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-receipt" />
+                <span>Payroll Setting</span>
+            </router-link>
+
+            <h5 class="sidebar-title">Others</h5>
+
+            <button @click="handleLogout" class="sidebar-item border-0">
+                <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
+                <span>Logout</span>
+            </button>
         </aside>
     </div>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
+import { useAuthStore } from "../stores/auth";
 
 export default {
     props: {
@@ -54,12 +117,17 @@ export default {
     },
     setup(props, context) {
         const route = useRoute();
+        const authStore = useAuthStore();
 
         const toggleNavbar = () => {
             context.emit("closed", "close");
         };
 
-        return { route, toggleNavbar };
+        const handleLogout = async () => {
+            await authStore.logout();
+        };
+
+        return { route, toggleNavbar, handleLogout };
     },
 };
 </script>

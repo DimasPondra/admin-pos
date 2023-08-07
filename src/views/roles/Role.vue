@@ -1,15 +1,21 @@
 <template>
-    <div class="row">
-        <TittlePage :title="title" />
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
 
-        <FilterRole :filter="filter" @clear_filter="clearFilter" />
+        <div class="content">
+            <div class="row">
+                <TittlePage :title="title" />
 
-        <div class="col-12">
-            <div class="statistics-card">
-                <div class="table-responsive">
-                    <TableRole :roles="roleStore.data.roles" @delete_role="handleDelete" />
+                <FilterRole :filter="filter" @clear_filter="clearFilter" />
 
-                    <Pagination :pagination="roleStore.data.pagination" @current_page="changePage" />
+                <div class="col-12">
+                    <div class="statistics-card">
+                        <div class="table-responsive">
+                            <TableRole :roles="roleStore.data.roles" @delete_role="handleDelete" />
+
+                            <Pagination :pagination="roleStore.data.pagination" @current_page="changePage" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -19,7 +25,9 @@
 <script>
 import { useRoleStore } from "../../stores/roles";
 import { onMounted, reactive, computed, watch } from "vue";
+import { useRoute } from "vue-router";
 
+import Navbar from "../../components/Navbar.vue";
 import FilterRole from "../../components/filters/FilterRole.vue";
 import Pagination from "../../components/Pagination.vue";
 import TableRole from "../../components/tables/TableRole.vue";
@@ -27,12 +35,14 @@ import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        Navbar,
         FilterRole,
         Pagination,
         TableRole,
         TittlePage,
     },
     setup() {
+        const route = useRoute();
         const roleStore = useRoleStore();
         const title = reactive({
             name: "Role",
@@ -40,6 +50,10 @@ export default {
         });
         const filter = reactive({
             name: "",
+        });
+        const navbar = reactive({
+            title: "Roles",
+            link: null,
         });
 
         const params = computed(() => {
@@ -64,6 +78,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadRoles();
         });
 
@@ -80,7 +95,7 @@ export default {
             await loadRoles(value);
         };
 
-        return { roleStore, handleDelete, title, filter, clearFilter, changePage };
+        return { roleStore, handleDelete, title, filter, navbar, clearFilter, changePage };
     },
 };
 </script>

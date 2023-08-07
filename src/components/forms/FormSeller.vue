@@ -1,13 +1,19 @@
 <template>
-    <div class="">
-        <router-link to="/sellers">Back</router-link>
+    <div class="col-12 statistics-card">
+        <form @submit.prevent="handleSubmit">
+            <div class="form-group mb-3">
+                <label for="name" class="mb-2">
+                    Name
+                    <span class="required">*</span>
+                </label>
+                <input type="text" class="form-control" id="name" v-model="sellerStore.data.seller.name" />
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-success">Save</button>
+            </div>
+        </form>
     </div>
-    <br />
-    <form @submit.prevent="handleSubmit">
-        <input type="text" v-model="sellerStore.data.seller.name" />
-        <br />
-        <button>Save</button>
-    </form>
 </template>
 
 <script>
@@ -29,6 +35,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             if (route.params.id != undefined) {
                 loadSeller();
             }

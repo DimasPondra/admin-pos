@@ -1,15 +1,24 @@
 <template>
-    <div class="row">
-        <TittlePage :title="title" />
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
 
-        <FilterUnitType :filter="filter" @clear_filter="clearFilter" />
+        <div class="content">
+            <div class="row">
+                <TittlePage :title="title" />
 
-        <div class="col-12">
-            <div class="statistics-card">
-                <div class="table-responsive">
-                    <TableUnitType :unit_types="unitTypeStore.data.unit_types" @delete_unit_type="handleDelete" />
+                <FilterUnitType :filter="filter" @clear_filter="clearFilter" />
 
-                    <Pagination :pagination="unitTypeStore.data.pagination" @current_page="changePage" />
+                <div class="col-12">
+                    <div class="statistics-card">
+                        <div class="table-responsive">
+                            <TableUnitType
+                                :unit_types="unitTypeStore.data.unit_types"
+                                @delete_unit_type="handleDelete"
+                            />
+
+                            <Pagination :pagination="unitTypeStore.data.pagination" @current_page="changePage" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -19,7 +28,9 @@
 <script>
 import { useUnitTypeStore } from "../../stores/unit-types";
 import { onMounted, reactive, computed, watch } from "vue";
+import { useRoute } from "vue-router";
 
+import Navbar from "../../components/Navbar.vue";
 import FilterUnitType from "../../components/filters/FilterUnitType.vue";
 import Pagination from "../../components/Pagination.vue";
 import TableUnitType from "../../components/tables/TableUnitType.vue";
@@ -27,12 +38,14 @@ import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        Navbar,
         FilterUnitType,
         Pagination,
         TableUnitType,
         TittlePage,
     },
     setup() {
+        const route = useRoute();
         const unitTypeStore = useUnitTypeStore();
         const title = reactive({
             name: "Unit Type",
@@ -40,6 +53,10 @@ export default {
         });
         const filter = reactive({
             name: "",
+        });
+        const navbar = reactive({
+            title: "Unit Types",
+            link: null,
         });
 
         const params = computed(() => {
@@ -64,6 +81,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadUnitTypes();
         });
 
@@ -80,7 +98,7 @@ export default {
             await loadUnitTypes(value);
         };
 
-        return { unitTypeStore, handleDelete, title, filter, clearFilter, changePage };
+        return { unitTypeStore, handleDelete, title, filter, navbar, clearFilter, changePage };
     },
 };
 </script>

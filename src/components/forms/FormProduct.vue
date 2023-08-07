@@ -61,6 +61,7 @@
                             class="form-select"
                             v-model="productStore.data.product.product_type_id"
                         >
+                            <option :value="null" selected disabled>Choose</option>
                             <option
                                 v-for="product_type in productTypeStore.data.product_types"
                                 :key="product_type.id"
@@ -109,6 +110,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadProductTypes();
             if (route.params.id != undefined) {
                 loadProduct();

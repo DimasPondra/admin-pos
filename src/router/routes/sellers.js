@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/sellers/Seller.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "sellers",
+            title: "Seller",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/sellers/CreateSeller.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "sellers",
+            title: "Create Seller",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/sellers/EditSeller.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "sellers",
+            title: "Edit Seller",
         },
     },
 ];

@@ -1,13 +1,19 @@
 <template>
-    <div class="row">
-        <TittlePage :title="title" />
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
 
-        <div class="col-12">
-            <div class="statistics-card">
-                <div class="table-responsive">
-                    <TableSalary :salaries="salaryStore.data.salaries" @delete_salary="handleDelete" />
+        <div class="content">
+            <div class="row">
+                <TittlePage :title="title" />
 
-                    <Pagination :pagination="salaryStore.data.pagination" @current_page="changePage" />
+                <div class="col-12">
+                    <div class="statistics-card">
+                        <div class="table-responsive">
+                            <TableSalary :salaries="salaryStore.data.salaries" @delete_salary="handleDelete" />
+
+                            <Pagination :pagination="salaryStore.data.pagination" @current_page="changePage" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -17,22 +23,30 @@
 <script>
 import { onMounted, reactive, computed } from "vue";
 import { useSalaryStore } from "../../stores/salaries";
+import { useRoute } from "vue-router";
 
+import Navbar from "../../components/Navbar.vue";
 import Pagination from "../../components/Pagination.vue";
 import TableSalary from "../../components/tables/TableSalary.vue";
 import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        Navbar,
         Pagination,
         TableSalary,
         TittlePage,
     },
     setup() {
+        const route = useRoute();
         const salaryStore = useSalaryStore();
         const title = reactive({
             name: "Salary",
             link_create: "/salaries/create",
+        });
+        const navbar = reactive({
+            title: "Salaries",
+            link: null,
         });
 
         const params = computed(() => {
@@ -50,6 +64,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadSalaries();
         });
 
@@ -62,7 +77,7 @@ export default {
             await loadSalaries(value);
         };
 
-        return { salaryStore, handleDelete, title, changePage };
+        return { salaryStore, handleDelete, title, navbar, changePage };
     },
 };
 </script>

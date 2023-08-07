@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/users/User.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "users",
+            title: "User",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/users/CreateUser.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "users",
+            title: "Create User",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/users/EditUser.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "users",
+            title: "Edit User",
         },
     },
 ];

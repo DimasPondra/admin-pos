@@ -30,6 +30,7 @@
 import { useProductTypeStore } from "../../stores/product-types";
 import { useProductStore } from "../../stores/products";
 import { onMounted, computed, reactive, watch } from "vue";
+import { useRoute } from "vue-router";
 
 import Navbar from "../../components/Navbar.vue";
 import FilterProduct from "../../components/filters/FilterProduct.vue";
@@ -46,6 +47,7 @@ export default {
         TittlePage,
     },
     setup() {
+        const route = useRoute();
         const productStore = useProductStore();
         const productTypeStore = useProductTypeStore();
         const title = reactive({
@@ -90,6 +92,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadProducts();
             loadProductTypes();
         });

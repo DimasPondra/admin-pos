@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/salaries/Salary.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "salaries",
+            title: "Salary",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/salaries/CreateSalary.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "salaries",
+            title: "Create Salary",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/salaries/EditSalary.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "salaries",
+            title: "Edit Salary",
         },
     },
 ];

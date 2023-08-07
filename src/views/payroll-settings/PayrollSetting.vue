@@ -1,22 +1,28 @@
 <template>
-    <div class="row">
-        <TittlePage :title="title" />
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
 
-        <FilterPayrollSetting
-            :filter="filter"
-            :unit_types="unitTypeStore.data.unit_types"
-            @clear_filter="clearFilter"
-        />
+        <div class="content">
+            <div class="row">
+                <TittlePage :title="title" />
 
-        <div class="col-12">
-            <div class="statistics-card">
-                <div class="table-responsive">
-                    <TablePayrollSetting
-                        :payroll_settings="payrollSettingStore.data.payroll_settings"
-                        @delete_payroll_setting="handleDelete"
-                    />
+                <FilterPayrollSetting
+                    :filter="filter"
+                    :unit_types="unitTypeStore.data.unit_types"
+                    @clear_filter="clearFilter"
+                />
 
-                    <Pagination :pagination="payrollSettingStore.data.pagination" @current_page="changePage" />
+                <div class="col-12">
+                    <div class="statistics-card">
+                        <div class="table-responsive">
+                            <TablePayrollSetting
+                                :payroll_settings="payrollSettingStore.data.payroll_settings"
+                                @delete_payroll_setting="handleDelete"
+                            />
+
+                            <Pagination :pagination="payrollSettingStore.data.pagination" @current_page="changePage" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -27,7 +33,9 @@
 import { useUnitTypeStore } from "../../stores/unit-types";
 import { usePayrollSettingStore } from "../../stores/payroll-settings";
 import { onMounted, computed, reactive, watch } from "vue";
+import { useRoute } from "vue-router";
 
+import Navbar from "../../components/Navbar.vue";
 import FilterPayrollSetting from "../../components/filters/FilterPayrollSetting.vue";
 import Pagination from "../../components/Pagination.vue";
 import TablePayrollSetting from "../../components/tables/TablePayrollSetting.vue";
@@ -35,12 +43,14 @@ import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        Navbar,
         FilterPayrollSetting,
         Pagination,
         TablePayrollSetting,
         TittlePage,
     },
     setup() {
+        const route = useRoute();
         const payrollSettingStore = usePayrollSettingStore();
         const unitTypeStore = useUnitTypeStore();
         const title = reactive({
@@ -50,6 +60,10 @@ export default {
         const filter = reactive({
             name: "",
             unit_type_id: null,
+        });
+        const navbar = reactive({
+            title: "Payroll Settings",
+            link: null,
         });
 
         const params = computed(() => {
@@ -81,6 +95,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadPayrollSettings();
             loadUnitTypes();
         });
@@ -99,7 +114,7 @@ export default {
             await loadPayrollSettings(value);
         };
 
-        return { payrollSettingStore, unitTypeStore, handleDelete, title, filter, clearFilter, changePage };
+        return { payrollSettingStore, unitTypeStore, handleDelete, title, filter, navbar, clearFilter, changePage };
     },
 };
 </script>
