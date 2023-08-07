@@ -8,6 +8,7 @@ import Seller from "./routes/sellers";
 import Salary from "./routes/salaries";
 import ExpenseType from "./routes/expense-types";
 import UnitType from "./routes/unit-types";
+import PayrollSetting from "./routes/payroll-settings";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -40,6 +41,7 @@ const router = createRouter({
         ...Salary,
         ...ExpenseType,
         ...UnitType,
+        ...PayrollSetting,
     ],
 });
 
