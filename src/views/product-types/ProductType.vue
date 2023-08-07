@@ -1,18 +1,24 @@
 <template>
-    <div class="row">
-        <TittlePage :title="title" />
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
 
-        <FilterProductType :filter="filter" @clear_filter="clearFilter" />
+        <div class="content">
+            <div class="row">
+                <TittlePage :title="title" />
 
-        <div class="col-12">
-            <div class="statistics-card">
-                <div class="table-responsive">
-                    <TableProductType
-                        :product_types="productTypeStore.data.product_types"
-                        @delete_product_type="handleDelete"
-                    />
+                <FilterProductType :filter="filter" @clear_filter="clearFilter" />
 
-                    <Pagination :pagination="productTypeStore.data.pagination" @current_page="changePage" />
+                <div class="col-12">
+                    <div class="statistics-card">
+                        <div class="table-responsive">
+                            <TableProductType
+                                :product_types="productTypeStore.data.product_types"
+                                @delete_product_type="handleDelete"
+                            />
+
+                            <Pagination :pagination="productTypeStore.data.pagination" @current_page="changePage" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -23,6 +29,7 @@
 import { useProductTypeStore } from "../../stores/product-types";
 import { onMounted, reactive, computed, watch } from "vue";
 
+import Navbar from "../../components/Navbar.vue";
 import FilterProductType from "../../components/filters/FilterProductType.vue";
 import Pagination from "../../components/Pagination.vue";
 import TableProductType from "../../components/tables/TableProductType.vue";
@@ -30,6 +37,7 @@ import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
+        Navbar,
         FilterProductType,
         Pagination,
         TableProductType,
@@ -43,6 +51,10 @@ export default {
         });
         const filter = reactive({
             name: "",
+        });
+        const navbar = reactive({
+            title: "Product Types",
+            link: null,
         });
 
         const params = computed(() => {
@@ -83,7 +95,7 @@ export default {
             await loadProductTypes(value);
         };
 
-        return { productTypeStore, handleDelete, title, filter, clearFilter, changePage };
+        return { productTypeStore, handleDelete, title, filter, navbar, clearFilter, changePage };
     },
 };
 </script>
