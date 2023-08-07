@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/payroll-settings/PayrollSetting.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "payroll-settings",
+            title: "Payroll Setting",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/payroll-settings/CreatePayrollSetting.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "payroll-settings",
+            title: "Create Payroll Setting",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/payroll-settings/EditPayrollSetting.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "payroll-settings",
+            title: "Edit Payroll Setting",
         },
     },
 ];

@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/expense-types/ExpenseType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "expense-types",
+            title: "Expense Type",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/expense-types/CreateExpenseType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "expense-types",
+            title: "Create Expense Type",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/expense-types/EditExpenseType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "expense-types",
+            title: "Edit Expense Type",
         },
     },
 ];

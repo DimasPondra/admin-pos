@@ -1,33 +1,57 @@
 <template>
-    <div>
-        <router-link to="/payroll-settings">Back</router-link>
+    <div class="col-12 statistics-card">
+        <form @submit.prevent="handleSubmit">
+            <div class="form-group mb-3">
+                <label for="name" class="mb-2">
+                    Name
+                    <span class="required">*</span>
+                </label>
+                <input
+                    type="text"
+                    class="form-control"
+                    id="name"
+                    v-model="payrollSettingStore.data.payroll_setting.name"
+                />
+                <br />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="nominal">Nominal<span class="required">*</span></label>
+                <input
+                    type="number"
+                    class="form-control"
+                    id="nominal"
+                    v-model="payrollSettingStore.data.payroll_setting.nominal"
+                />
+                <br />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="unit_type_id" class="mb-2">
+                    Unit Type
+                    <span class="required">*</span>
+                </label>
+                <select
+                    id="unit_type_id"
+                    class="form-select"
+                    v-model="payrollSettingStore.data.payroll_setting.unit_type_id"
+                >
+                    <option :value="null" selected disabled>Choose</option>
+                    <option
+                        v-for="unit_type in unitTypeStore.data.unit_types"
+                        :key="unit_type.id"
+                        :value="unit_type.id"
+                    >
+                        {{ unit_type.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="d-flex justify-content-end">
+                <button class="btn btn-sm btn-success">Save</button>
+            </div>
+        </form>
     </div>
-    <br />
-    <form @submit.prevent="handleSubmit">
-        <div>
-            <label for="name">Name</label>
-            <input type="text" id="name" v-model="payrollSettingStore.data.payroll_setting.name" />
-            <br />
-        </div>
-
-        <div>
-            <label for="nominal">Nominal</label>
-            <input type="number" id="nominal" v-model="payrollSettingStore.data.payroll_setting.nominal" />
-            <br />
-        </div>
-
-        <div>
-            <label for="unit_type_id">Unit Type</label>
-            <select id="unit_type_id" v-model="payrollSettingStore.data.payroll_setting.unit_type_id">
-                <option v-for="unit_type in unitTypeStore.data.unit_types" :key="unit_type.id" :value="unit_type.id">
-                    {{ unit_type.name }}
-                </option>
-            </select>
-            <br />
-        </div>
-
-        <button>Save</button>
-    </form>
 </template>
 
 <script>
@@ -59,6 +83,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
             loadUnitTypes();
             if (route.params.id != undefined) {
                 loadPayrollSetting();

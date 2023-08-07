@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/unit-types/UnitType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "unit-types",
+            title: "Unit Type",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/unit-types/CreateUnitType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "unit-types",
+            title: "Create Unit Type",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/unit-types/EditUnitType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "unit-types",
+            title: "Edit Unit Type",
         },
     },
 ];

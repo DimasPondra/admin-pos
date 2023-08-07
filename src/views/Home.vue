@@ -1,19 +1,35 @@
 <template>
-    <button @click="handleLogout">Logout</button>
+    <div class="col-12 col-xl-9">
+        <Navbar :navbar="navbar" @clicked="$emit('hide', 'open')" />
+
+        <div class="content">
+            <div class="row"></div>
+        </div>
+    </div>
 </template>
 
 <script>
-import { useAuthStore } from "../stores/auth";
+import { reactive, onMounted } from "vue";
+import { useRoute } from "vue-router";
+
+import Navbar from "../components/Navbar.vue";
 
 export default {
+    components: {
+        Navbar,
+    },
     setup() {
-        const auth = useAuthStore();
+        const route = useRoute();
+        const navbar = reactive({
+            title: "Dashboard",
+            link: null,
+        });
 
-        async function handleLogout() {
-            await auth.logout();
-        }
+        onMounted(() => {
+            document.title = `Admin Panel - ${route.meta.title}`;
+        });
 
-        return { handleLogout };
+        return { navbar };
     },
 };
 </script>

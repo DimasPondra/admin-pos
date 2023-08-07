@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/product-types/ProductType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "product-types",
+            title: "Product Type",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/product-types/CreateProductType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "product-types",
+            title: "Create Product Type",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/product-types/EditProductType.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "product-types",
+            title: "Edit Product Type",
         },
     },
 ];

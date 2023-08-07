@@ -7,6 +7,8 @@ export default [
         component: () => import("../../views/roles/Role.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "roles",
+            title: "Role",
         },
     },
     {
@@ -15,6 +17,8 @@ export default [
         component: () => import("../../views/roles/CreateRole.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "roles",
+            title: "Create Role",
         },
     },
     {
@@ -23,6 +27,8 @@ export default [
         component: () => import("../../views/roles/EditRole.vue"),
         meta: {
             middleware: [AuthMiddleware],
+            name_page: "roles",
+            title: "Edit Role",
         },
     },
 ];

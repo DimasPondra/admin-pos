@@ -15,6 +15,9 @@ import AuthMiddleware from "../middleware/auth";
 import GuestMiddleware from "../middleware/guest";
 
 const router = createRouter({
+    scrollBehavior(to, from, savedPosition) {
+        return { top: 0 };
+    },
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
@@ -23,6 +26,8 @@ const router = createRouter({
             component: () => import("../views/Home.vue"),
             meta: {
                 middleware: [AuthMiddleware],
+                name_page: "dashboard",
+                title: "Dashboard",
             },
         },
         {
@@ -31,6 +36,8 @@ const router = createRouter({
             component: () => import("../views/Login.vue"),
             meta: {
                 middleware: [GuestMiddleware],
+                name_page: "login",
+                title: "Login",
             },
         },
         ...Role,
