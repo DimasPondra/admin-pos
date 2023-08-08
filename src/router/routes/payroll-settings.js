@@ -1,4 +1,5 @@
 import AuthMiddleware from "../../middleware/auth";
+import AdminMiddleware from "../../middleware/admin";
 
 export default [
     {
@@ -6,7 +7,7 @@ export default [
         name: "payroll-setting",
         component: () => import("../../views/payroll-settings/PayrollSetting.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "payroll-settings",
             title: "Payroll Setting",
         },
@@ -16,7 +17,7 @@ export default [
         name: "create-payroll-setting",
         component: () => import("../../views/payroll-settings/CreatePayrollSetting.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "payroll-settings",
             title: "Create Payroll Setting",
         },
@@ -26,7 +27,7 @@ export default [
         name: "edit-payroll-setting",
         component: () => import("../../views/payroll-settings/EditPayrollSetting.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "payroll-settings",
             title: "Edit Payroll Setting",
         },

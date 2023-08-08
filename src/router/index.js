@@ -9,10 +9,12 @@ import Salary from "./routes/salaries";
 import ExpenseType from "./routes/expense-types";
 import UnitType from "./routes/unit-types";
 import PayrollSetting from "./routes/payroll-settings";
+import Purchase from "./routes/purchases";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
 import GuestMiddleware from "../middleware/guest";
+import AdminMiddleware from "../middleware/admin";
 
 const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
@@ -25,7 +27,7 @@ const router = createRouter({
             name: "home",
             component: () => import("../views/Home.vue"),
             meta: {
-                middleware: [AuthMiddleware],
+                middleware: [AuthMiddleware, AdminMiddleware],
                 name_page: "dashboard",
                 title: "Dashboard",
             },
@@ -49,6 +51,7 @@ const router = createRouter({
         ...ExpenseType,
         ...UnitType,
         ...PayrollSetting,
+        ...Purchase,
     ],
 });
 

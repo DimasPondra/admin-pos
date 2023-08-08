@@ -3,19 +3,19 @@
         <LayoutDefault />
     </section>
     <section v-else>
-        <LayoutDashboardAdmin />
+        <LayoutDashboard />
     </section>
 </template>
 
 <script>
 import { useRoute } from "vue-router";
 
-import LayoutDashboardAdmin from "./components/layouts/LayoutDashboardAdmin.vue";
+import LayoutDashboard from "./components/layouts/LayoutDashboard.vue";
 import LayoutDefault from "./components/layouts/LayoutDefault.vue";
 
 export default {
     components: {
-        LayoutDashboardAdmin,
+        LayoutDashboard,
         LayoutDefault,
     },
     setup() {

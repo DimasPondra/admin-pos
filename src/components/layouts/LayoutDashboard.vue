@@ -1,8 +1,14 @@
 <template>
     <div class="screen-cover d-xl-none" :class="style.cover"></div>
 
-    <div class="row">
+    <div class="row" v-if="authStore.ability == 'admin'">
         <Sidebar :navbar="style.navbar" @closed="toggleNavbar" />
+
+        <RouterView @hide="toggleNavbar" />
+    </div>
+
+    <div class="row" v-else-if="authStore.ability == 'finance'">
+        <SidebarFinance :navbar="style.navbar" @closed="toggleNavbar" />
 
         <RouterView @hide="toggleNavbar" />
     </div>
@@ -10,12 +16,16 @@
 
 <script>
 import Sidebar from "../Sidebar.vue";
+import SidebarFinance from "../SidebarFinance.vue";
+
 import { reactive } from "vue";
 import { RouterView } from "vue-router";
+import { useAuthStore } from "../../stores/auth";
 
 export default {
     components: {
         Sidebar,
+        SidebarFinance,
     },
     setup() {
         const style = reactive({
@@ -33,7 +43,9 @@ export default {
             }
         };
 
-        return { style, toggleNavbar };
+        const authStore = useAuthStore();
+
+        return { style, toggleNavbar, authStore };
     },
 };
 </script>

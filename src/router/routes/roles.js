@@ -1,4 +1,5 @@
 import AuthMiddleware from "../../middleware/auth";
+import AdminMiddleware from "../../middleware/admin";
 
 export default [
     {
@@ -6,7 +7,7 @@ export default [
         name: "role",
         component: () => import("../../views/roles/Role.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "roles",
             title: "Role",
         },
@@ -16,7 +17,7 @@ export default [
         name: "create-role",
         component: () => import("../../views/roles/CreateRole.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "roles",
             title: "Create Role",
         },
@@ -26,7 +27,7 @@ export default [
         name: "edit-role",
         component: () => import("../../views/roles/EditRole.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "roles",
             title: "Edit Role",
         },
