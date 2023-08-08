@@ -1,4 +1,5 @@
 import AuthMiddleware from "../../middleware/auth";
+import AdminMiddleware from "../../middleware/admin";
 
 export default [
     {
@@ -6,7 +7,7 @@ export default [
         name: "product-type",
         component: () => import("../../views/product-types/ProductType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "product-types",
             title: "Product Type",
         },
@@ -16,7 +17,7 @@ export default [
         name: "create-product-type",
         component: () => import("../../views/product-types/CreateProductType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "product-types",
             title: "Create Product Type",
         },
@@ -26,7 +27,7 @@ export default [
         name: "edit-product-type",
         component: () => import("../../views/product-types/EditProductType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "product-types",
             title: "Edit Product Type",
         },

@@ -1,4 +1,5 @@
 import AuthMiddleware from "../../middleware/auth";
+import AdminMiddleware from "../../middleware/admin";
 
 export default [
     {
@@ -6,7 +7,7 @@ export default [
         name: "expense-type",
         component: () => import("../../views/expense-types/ExpenseType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "expense-types",
             title: "Expense Type",
         },
@@ -16,7 +17,7 @@ export default [
         name: "create-expense-type",
         component: () => import("../../views/expense-types/CreateExpenseType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "expense-types",
             title: "Create Expense Type",
         },
@@ -26,7 +27,7 @@ export default [
         name: "edit-expense-type",
         component: () => import("../../views/expense-types/EditExpenseType.vue"),
         meta: {
-            middleware: [AuthMiddleware],
+            middleware: [AuthMiddleware, AdminMiddleware],
             name_page: "expense-types",
             title: "Edit Expense Type",
         },

@@ -3,6 +3,7 @@ import { defineStore } from "pinia";
 import { ref } from "vue";
 import SecureLS from "secure-ls";
 import router from "../router";
+import { useAlertStore } from "./alerts";
 
 const secureLS = new SecureLS({
     encodingType: "aes",
@@ -13,19 +14,27 @@ export const useAuthStore = defineStore(
     "auth",
     () => {
         const token = ref("");
+        const ability = ref("");
 
-        async function login(user) {
+        const alertStore = useAlertStore();
+
+        const login = async (user) => {
             try {
-                const response = await axios.post("auth/login", user);
-                token.value = "Bearer " + response.data.access_token;
+                const res = await axios.post("auth/login", user);
+                token.value = "Bearer " + res.data.access_token;
+                ability.value = res.data.ability;
 
-                router.push("/");
+                if (ability.value == "admin") {
+                    router.push("/");
+                } else if (ability.value == "finance") {
+                    router.push("/purchases");
+                }
             } catch (error) {
-                console.log(error);
+                alertStore.handleError(error);
             }
-        }
+        };
 
-        async function logout() {
+        const logout = async () => {
             try {
                 await axios.post("auth/logout", "", {
                     headers: {
@@ -33,23 +42,38 @@ export const useAuthStore = defineStore(
                     },
                 });
 
-                token.value = null;
+                $reset();
                 router.push("/login");
             } catch (error) {
-                console.log(error);
+                alertStore.handleError(error);
             }
-        }
+        };
 
-        return { token, login, logout };
+        const $reset = () => {
+            token.value = null;
+            ability.value = null;
+        };
+
+        return { token, ability, login, logout, $reset };
     },
     {
-        persist: {
-            key: "token",
-            paths: ["token"],
-            storage: {
-                getItem: (key) => secureLS.get(key),
-                setItem: (key, value) => secureLS.set(key, value),
+        persist: [
+            {
+                key: "token",
+                paths: ["token"],
+                storage: {
+                    getItem: (key) => secureLS.get(key),
+                    setItem: (key, value) => secureLS.set(key, value),
+                },
             },
-        },
+            {
+                key: "ability",
+                paths: ["ability"],
+                storage: {
+                    getItem: (key) => secureLS.get(key),
+                    setItem: (key, value) => secureLS.set(key, value),
+                },
+            },
+        ],
     }
 );
