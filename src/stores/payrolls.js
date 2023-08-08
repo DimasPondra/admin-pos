@@ -23,7 +23,7 @@ export const usePayrollStore = defineStore("payroll", () => {
         pagination: {
             page: 1,
             total: 0,
-            per_page: 1,
+            per_page: 10,
             option: {
                 chunk: 3,
                 chunksNavigation: "scroll",

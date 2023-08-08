@@ -1,7 +1,7 @@
 <template>
     <div class="col-12 d-flex justify-content-between">
         <h2 class="content-title mb-4">List {{ title.name }}</h2>
-        <div class="btn mb-2 mb-md-0">
+        <div class="btn mb-2 mb-md-0" v-if="title.link_create != null">
             <router-link :to="title.link_create" class="btn btn-sm btn-primary"
                 >Add new {{ titleLowerCase }}</router-link
             >
