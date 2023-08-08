@@ -23,6 +23,17 @@
                 <span>Purchase</span>
             </router-link>
 
+            <h5 class="sidebar-title">Payroll</h5>
+
+            <router-link
+                to="/payrolls"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'payrolls' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-file-invoice-dollar" />
+                <span>Payroll</span>
+            </router-link>
+
             <h5 class="sidebar-title">Others</h5>
 
             <button @click="handleLogout" class="sidebar-item border-0">

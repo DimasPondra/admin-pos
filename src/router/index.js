@@ -10,6 +10,7 @@ import ExpenseType from "./routes/expense-types";
 import UnitType from "./routes/unit-types";
 import PayrollSetting from "./routes/payroll-settings";
 import Purchase from "./routes/purchases";
+import Payroll from "./routes/payrolls";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -52,6 +53,7 @@ const router = createRouter({
         ...UnitType,
         ...PayrollSetting,
         ...Purchase,
+        ...Payroll,
     ],
 });
 
