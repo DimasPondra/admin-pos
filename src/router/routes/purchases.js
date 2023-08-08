@@ -12,24 +12,24 @@ export default [
             title: "Purchase",
         },
     },
-    // {
-    //     path: "/expense-types/create",
-    //     name: "create-expense-type",
-    //     component: () => import("../../views/expense-types/CreateExpenseType.vue"),
-    //     meta: {
-    //         middleware: [AuthMiddleware],
-    //         name_page: "expense-types",
-    //         title: "Create Expense Type",
-    //     },
-    // },
-    // {
-    //     path: "/expense-types/:id/edit",
-    //     name: "edit-expense-type",
-    //     component: () => import("../../views/expense-types/EditExpenseType.vue"),
-    //     meta: {
-    //         middleware: [AuthMiddleware],
-    //         name_page: "expense-types",
-    //         title: "Edit Expense Type",
-    //     },
-    // },
+    {
+        path: "/purchases/create",
+        name: "create-purchase",
+        component: () => import("../../views/purchases/CreatePurchase.vue"),
+        meta: {
+            middleware: [AuthMiddleware, FinanceMiddleware],
+            name_page: "purchases",
+            title: "Create Purchase",
+        },
+    },
+    {
+        path: "/purchases/:id/edit",
+        name: "edit-purchase",
+        component: () => import("../../views/purchases/EditPurchase.vue"),
+        meta: {
+            middleware: [AuthMiddleware, FinanceMiddleware],
+            name_page: "purchases",
+            title: "Edit Purchase",
+        },
+    },
 ];

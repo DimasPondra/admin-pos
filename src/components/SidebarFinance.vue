@@ -19,7 +19,7 @@
                 class="sidebar-item"
                 :class="route.meta.name_page == 'purchases' ? 'active' : ''"
             >
-                <font-awesome-icon icon="fa-solid fa-tag" />
+                <font-awesome-icon icon="fa-solid fa-file-circle-plus" />
                 <span>Purchase</span>
             </router-link>
 
