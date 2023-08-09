@@ -28,6 +28,8 @@ export const useAuthStore = defineStore(
                     router.push("/");
                 } else if (ability.value == "finance") {
                     router.push("/purchases");
+                } else if (ability.value == "cashier") {
+                    router.push("/carts");
                 }
             } catch (error) {
                 alertStore.handleError(error);
