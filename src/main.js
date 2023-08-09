@@ -35,6 +35,8 @@ import {
     faArrowRightFromBracket,
     faFileCirclePlus,
     faFileInvoiceDollar,
+    faPlus,
+    faMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -52,7 +54,9 @@ library.add(
     faReceipt,
     faArrowRightFromBracket,
     faFileCirclePlus,
-    faFileInvoiceDollar
+    faFileInvoiceDollar,
+    faPlus,
+    faMinus
 );
 
 const app = createApp(App);

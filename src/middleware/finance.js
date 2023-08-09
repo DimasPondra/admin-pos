@@ -6,7 +6,10 @@ export default (to, from, next) => {
     if (authStore.ability == "admin") {
         next({ name: "home" });
         return false;
-    } else if (authStore.ability != "admin" && authStore.ability != "finance") {
+    } else if (authStore.ability == "cashier") {
+        next({ name: "cart" });
+        return false;
+    } else if (authStore.ability != "admin" && authStore.ability != "finance" && authStore.ability != "cashier") {
         authStore.$reset();
 
         next({ name: "login" });

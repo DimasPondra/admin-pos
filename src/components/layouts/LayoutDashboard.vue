@@ -12,10 +12,17 @@
 
         <RouterView @hide="toggleNavbar" />
     </div>
+
+    <div class="row" v-else-if="authStore.ability == 'cashier'">
+        <SidebarCashier :navbar="style.navbar" @closed="toggleNavbar" />
+
+        <RouterView @hide="toggleNavbar" />
+    </div>
 </template>
 
 <script>
 import Sidebar from "../Sidebar.vue";
+import SidebarCashier from "../SidebarCashier.vue";
 import SidebarFinance from "../SidebarFinance.vue";
 
 import { reactive } from "vue";
@@ -25,6 +32,7 @@ import { useAuthStore } from "../../stores/auth";
 export default {
     components: {
         Sidebar,
+        SidebarCashier,
         SidebarFinance,
     },
     setup() {
