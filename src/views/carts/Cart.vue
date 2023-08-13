@@ -4,10 +4,20 @@
 
         <div class="content">
             <div class="row">
-                <div class="col-8">
+                <div class="col-12 col-md-8">
                     <div class="statistics-card p-0">
+                        <FilterProduct
+                            :filter="filter"
+                            :product_types="productTypeStore.data.product_types"
+                            @clear_filter="clearFilter"
+                        />
+
                         <div class="row">
-                            <div class="col-3 px-1" v-for="product in productStore.data.products" :key="product.id">
+                            <div
+                                class="col-6 col-md-4 col-lg-3 px-1 mb-2"
+                                v-for="product in productStore.data.products"
+                                :key="product.id"
+                            >
                                 <div class="card">
                                     <img src="@/assets/logo.svg" class="card-img-top image" alt="image" />
                                     <div class="card-body">
@@ -20,18 +30,24 @@
                                 </div>
                             </div>
                         </div>
+
+                        <Pagination :pagination="productStore.data.pagination" @current_page="changePage" />
                     </div>
                 </div>
 
-                <div class="col-4">
+                <div class="col-12 col-md-4">
                     <div class="statistics-card p-0">
                         <div class="card">
                             <div class="card-body overflow-y-auto custom-card">
                                 <ul class="list-group list-group-flush">
-                                    <li v-for="cart in cartStore.data.carts" :key="cart.id" class="list-group-item">
-                                        <h6>{{ cart.product.name }}</h6>
-                                        <p>Rp {{ cart.product.price }}</p>
-                                        <p class="text-end">
+                                    <li
+                                        v-for="cart in cartStore.data.carts"
+                                        :key="cart.id"
+                                        class="list-group-item px-2"
+                                    >
+                                        <h6 class="mb-1">{{ cart.product.name }}</h6>
+                                        <p class="mb-0">Rp {{ cart.product.price }}</p>
+                                        <p class="text-end mb-0">
                                             <font-awesome-icon icon="fa-solid fa-minus" @click="handleMinus(cart.id)" />
                                             <span class="mx-3">
                                                 {{ cart.amount }}
@@ -45,10 +61,10 @@
 
                         <div class="card mt-3">
                             <div class="card-body">
-                                <h6>Total</h6>
-                                <p class="text-end">Rp {{ total }}</p>
+                                <h6 class="mb-1">Total</h6>
+                                <p class="text-end mb-0">Rp {{ total }}</p>
                             </div>
-                            <a class="btn btn-sm btn-success d-block">Pay</a>
+                            <a class="btn btn-sm btn-success d-block" @click="handlePayment">Pay</a>
                         </div>
                     </div>
                 </div>
@@ -60,18 +76,28 @@
 <script>
 import Navbar from "../../components/Navbar.vue";
 
-import { reactive, onMounted, computed } from "vue";
+import { reactive, onMounted, computed, watch } from "vue";
 import { useProductStore } from "../../stores/products";
 import { useCartStore } from "../../stores/carts";
+import Pagination from "../../components/Pagination.vue";
+import FilterProduct from "../../components/filters/FilterProduct.vue";
+import { useProductTypeStore } from "../../stores/product-types";
+import { useTransactionStore } from "../../stores/transactions";
 
 export default {
-    components: { Navbar },
+    components: { Navbar, Pagination, FilterProduct },
     setup() {
         const productStore = useProductStore();
         const cartStore = useCartStore();
+        const productTypeStore = useProductTypeStore();
+        const transactionStore = useTransactionStore();
         const navbar = reactive({
             title: "Carts",
             link: null,
+        });
+        const filter = reactive({
+            name: "",
+            product_type_id: null,
         });
 
         const cartParams = computed(() => {
@@ -79,6 +105,23 @@ export default {
                 include: "product",
             };
         });
+
+        const productParams = computed(() => {
+            return {
+                name: filter.name,
+                product_type_id: filter.product_type_id,
+                page: productStore.data.pagination.page,
+                per_page: 8,
+            };
+        });
+
+        watch(
+            () => filter,
+            () => {
+                loadProducts(1);
+            },
+            { deep: true }
+        );
 
         const total = computed(() => {
             const items = cartStore.data.carts;
@@ -91,8 +134,14 @@ export default {
             return nominal;
         });
 
-        const loadProducts = async () => {
-            await productStore.get();
+        const loadProducts = async (value) => {
+            productParams.value.page = value != null ? value : productParams.value.page;
+
+            await productStore.get(productParams.value);
+        };
+
+        const loadProductTypes = async () => {
+            await productTypeStore.get();
         };
 
         const loadCarts = async () => {
@@ -140,10 +189,39 @@ export default {
 
         onMounted(() => {
             loadProducts();
+            loadProductTypes();
             loadCarts();
         });
 
-        return { productStore, total, cartStore, handleSubmit, handlePlus, handleMinus, navbar };
+        const clearFilter = () => {
+            filter.name = "";
+            filter.product_type_id = null;
+        };
+
+        const changePage = async (value) => {
+            await loadProducts(value);
+        };
+
+        const handlePayment = async () => {
+            await transactionStore.save(null);
+
+            loadCarts();
+        };
+
+        return {
+            productStore,
+            productTypeStore,
+            total,
+            cartStore,
+            handleSubmit,
+            handlePlus,
+            handleMinus,
+            clearFilter,
+            changePage,
+            handlePayment,
+            navbar,
+            filter,
+        };
     },
 };
 </script>
