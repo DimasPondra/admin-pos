@@ -65,6 +65,17 @@
                 <span>Salary</span>
             </router-link>
 
+            <h5 class="sidebar-title">Transaction</h5>
+
+            <router-link
+                to="/transactions"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'transactions' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-file-invoice" />
+                <span>Transaction</span>
+            </router-link>
+
             <h5 class="sidebar-title">Setting</h5>
 
             <router-link

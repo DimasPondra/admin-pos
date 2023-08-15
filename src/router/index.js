@@ -12,6 +12,7 @@ import PayrollSetting from "./routes/payroll-settings";
 import Purchase from "./routes/purchases";
 import Payroll from "./routes/payrolls";
 import Cart from "./routes/carts";
+import Transaction from "./routes/transactions";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -56,6 +57,7 @@ const router = createRouter({
         ...Purchase,
         ...Payroll,
         ...Cart,
+        ...Transaction,
     ],
 });
 
