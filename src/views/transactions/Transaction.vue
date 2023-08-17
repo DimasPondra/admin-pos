@@ -10,6 +10,8 @@
                     <div class="statistics-card">
                         <div class="table-responsive">
                             <TableTransaction :transactions="transactionStore.data.transactions" />
+
+                            <Pagination :pagination="transactionStore.data.pagination" @current_page="changePage" />
                         </div>
                     </div>
                 </div>
@@ -20,16 +22,18 @@
 
 <script>
 import { useTransactionStore } from "../../stores/transactions";
-import { reactive, onMounted } from "vue";
+import { reactive, onMounted, computed } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "../../components/Navbar.vue";
+import Pagination from "../../components/Pagination.vue";
 import TableTransaction from "../../components/tables/TableTransaction.vue";
 import TittlePage from "../../components/TittlePage.vue";
 
 export default {
     components: {
         Navbar,
+        Pagination,
         TableTransaction,
         TittlePage,
     },
@@ -45,8 +49,17 @@ export default {
             link: null,
         });
 
-        const loadTransactions = async () => {
-            await transactionStore.get();
+        const params = computed(() => {
+            return {
+                page: transactionStore.data.pagination.page,
+                per_page: transactionStore.data.pagination.per_page,
+            };
+        });
+
+        const loadTransactions = async (value) => {
+            params.value.page = value != null ? value : params.value.page;
+
+            await transactionStore.get(params.value);
         };
 
         onMounted(() => {
@@ -54,7 +67,11 @@ export default {
             loadTransactions();
         });
 
-        return { transactionStore, title, navbar };
+        const changePage = async (value) => {
+            await loadTransactions(value);
+        };
+
+        return { transactionStore, title, navbar, changePage };
     },
 };
 </script>

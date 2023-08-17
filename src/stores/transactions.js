@@ -15,6 +15,16 @@ export const useTransactionStore = defineStore("transaction", () => {
             user: {},
             details: [],
         },
+        pagination: {
+            page: 1,
+            total: 0,
+            per_page: 1,
+            option: {
+                chunk: 3,
+                chunksNavigation: "scroll",
+                hideCount: true,
+            },
+        },
     });
 
     const authStore = useAuthStore();
@@ -32,6 +42,12 @@ export const useTransactionStore = defineStore("transaction", () => {
             });
 
             data.transactions = res.data.data;
+
+            if (res.data.meta != null) {
+                data.pagination.page = res.data.meta.current_page;
+                data.pagination.total = res.data.meta.total;
+                data.pagination.per_page = res.data.meta.per_page;
+            }
         } catch (error) {
             alertStore.handleError(error);
         }

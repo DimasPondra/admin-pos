@@ -63,7 +63,7 @@ export default {
             return {
                 username: filter.username,
                 role_id: filter.role_id,
-                include: "role",
+                include: "role,file",
                 page: userStore.data.pagination.page,
                 per_page: userStore.data.pagination.per_page,
             };

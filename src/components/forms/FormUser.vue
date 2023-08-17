@@ -34,6 +34,17 @@
                 </div>
             </div>
 
+            <div v-if="route.params.id == undefined">
+                <div v-if="userStore.data.user.file_id != null">
+                    <img :src="userStore.data.user.file.url" alt="image" width="150" class="rounded" />
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="file" class="mb-2"> Image </label>
+                    <input type="file" id="file" class="form-control" @change="handleUpload" />
+                </div>
+            </div>
+
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-success">Save</button>
             </div>
@@ -46,11 +57,13 @@ import { useRoute } from "vue-router";
 import { useRoleStore } from "../../stores/roles";
 import { useUserStore } from "../../stores/users";
 import { onMounted } from "vue";
+import { useFileStore } from "../../stores/files";
 
 export default {
     setup() {
         const userStore = useUserStore();
         const roleStore = useRoleStore();
+        const fileStore = useFileStore();
         const route = useRoute();
 
         const handleSubmit = async () => {
@@ -66,7 +79,22 @@ export default {
             loadRoles();
         });
 
-        return { userStore, roleStore, route, handleSubmit };
+        const handleUpload = async (event) => {
+            const form = new FormData();
+            const file = event.target.files;
+
+            for (let i = 0; i < file.length; i++) {
+                form.append(`files[${i}]`, file[i]);
+            }
+
+            form.append("folder_name", "users");
+
+            await fileStore.upload(form);
+            userStore.data.user.file = fileStore.data.file;
+            userStore.data.user.file_id = fileStore.data.file.id;
+        };
+
+        return { userStore, roleStore, route, handleSubmit, handleUpload };
     },
 };
 </script>
