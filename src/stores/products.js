@@ -4,6 +4,7 @@ import { useAlertStore } from "./alerts";
 import axios from "axios";
 import { useAuthStore } from "./auth";
 import router from "../router";
+import { useFileStore } from "./files";
 
 export const useProductStore = defineStore("product", () => {
     const data = reactive({
@@ -17,6 +18,8 @@ export const useProductStore = defineStore("product", () => {
             amount: 0,
             product_type_id: null,
             product_type: {},
+            file_id: null,
+            file: {},
         },
         pagination: {
             page: 1,
@@ -32,6 +35,7 @@ export const useProductStore = defineStore("product", () => {
 
     const alertStore = useAlertStore();
     const authStore = useAuthStore();
+    const fileStore = useFileStore();
 
     const get = async (params) => {
         clear();
@@ -69,6 +73,7 @@ export const useProductStore = defineStore("product", () => {
 
             data.product = res.data.data;
             data.product.product_type_id = res.data.data.product_type.id;
+            data.product.file_id = res.data.data.file.id;
         } catch (error) {
             alertStore.handleError(error);
         }
@@ -95,6 +100,7 @@ export const useProductStore = defineStore("product", () => {
             }
 
             clear();
+            fileStore.clearFile();
             router.push("/products");
         } catch (error) {
             alertStore.handleError(error);
@@ -124,6 +130,8 @@ export const useProductStore = defineStore("product", () => {
         data.product.amount = 0;
         data.product.product_type_id = null;
         data.product.product_type = {};
+        data.product.file_id = null;
+        data.product.file = {};
     };
 
     return { data, get, show, save, deleteItem };

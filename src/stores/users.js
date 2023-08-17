@@ -4,6 +4,7 @@ import { useAuthStore } from "./auth";
 import { useAlertStore } from "./alerts";
 import axios from "axios";
 import router from "../router";
+import { useFileStore } from "./files";
 
 export const useUserStore = defineStore("user", () => {
     const data = reactive({
@@ -14,6 +15,7 @@ export const useUserStore = defineStore("user", () => {
             password: "",
             role_id: null,
             file_id: null,
+            file: {},
         },
         pagination: {
             page: 1,
@@ -29,6 +31,7 @@ export const useUserStore = defineStore("user", () => {
 
     const authStore = useAuthStore();
     const alertStore = useAlertStore();
+    const fileStore = useFileStore();
 
     const get = async (params) => {
         clear();
@@ -74,6 +77,7 @@ export const useUserStore = defineStore("user", () => {
             }
 
             clear();
+            fileStore.clearFile();
             router.push("/users");
         } catch (error) {
             alertStore.handleError(error);
@@ -86,6 +90,7 @@ export const useUserStore = defineStore("user", () => {
         data.user.password = "";
         data.user.role_id = null;
         data.user.file_id = null;
+        data.user.file = {};
     };
 
     return { data, get, save };

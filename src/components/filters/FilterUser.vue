@@ -13,7 +13,7 @@
 
             <div class="col-12 col-md-3 d-flex">
                 <select id="role_id" v-model="filter.role_id" class="form-control">
-                    <option :value="null" selected disabled>Choose Product Type</option>
+                    <option :value="null" selected disabled>Choose Role</option>
                     <option v-for="role in roles" :key="role.id" :value="role.id">
                         {{ role.name }}
                     </option>

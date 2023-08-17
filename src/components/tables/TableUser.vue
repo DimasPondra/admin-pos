@@ -2,6 +2,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Avatar</th>
                 <th>Name</th>
                 <th>Role</th>
                 <th>Action</th>
@@ -9,6 +10,12 @@
         </thead>
         <tbody>
             <tr v-for="user in users" :key="user.id">
+                <td>
+                    <div v-if="user.file == null">-</div>
+                    <div v-else>
+                        <img :src="user.file.url" alt="image" width="25" class="rounded" />
+                    </div>
+                </td>
                 <td>{{ user.username }}</td>
                 <td>{{ user.role.name }}</td>
                 <td width="10%">

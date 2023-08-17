@@ -74,6 +74,15 @@
                 </div>
             </div>
 
+            <div v-if="productStore.data.product.file_id != null">
+                <img :src="productStore.data.product.file.url" alt="image" width="150" class="rounded" />
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="file" class="mb-2"> Image </label>
+                <input type="file" id="file" class="form-control" @change="handleUpload" />
+            </div>
+
             <div class="d-flex justify-content-end">
                 <button class="btn btn-sm btn-success">Save</button>
             </div>
@@ -86,15 +95,17 @@ import { useRoute } from "vue-router";
 import { useProductTypeStore } from "../../stores/product-types";
 import { useProductStore } from "../../stores/products";
 import { onMounted, computed } from "vue";
+import { useFileStore } from "../../stores/files";
 
 export default {
     setup() {
         const productStore = useProductStore();
         const productTypeStore = useProductTypeStore();
+        const fileStore = useFileStore();
         const route = useRoute();
 
         const params = computed(() => {
-            return { include: "product_type" };
+            return { include: "product_type,file" };
         });
 
         const handleSubmit = async () => {
@@ -117,7 +128,22 @@ export default {
             }
         });
 
-        return { productStore, productTypeStore, handleSubmit };
+        const handleUpload = async (event) => {
+            const form = new FormData();
+            const file = event.target.files;
+
+            for (let i = 0; i < file.length; i++) {
+                form.append(`files[${i}]`, file[i]);
+            }
+
+            form.append("folder_name", "products");
+
+            await fileStore.upload(form);
+            productStore.data.product.file = fileStore.data.file;
+            productStore.data.product.file_id = fileStore.data.file.id;
+        };
+
+        return { productStore, productTypeStore, fileStore, handleSubmit, handleUpload };
     },
 };
 </script>
