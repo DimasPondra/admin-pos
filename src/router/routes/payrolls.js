@@ -13,6 +13,16 @@ export default [
         },
     },
     {
+        path: "/payrolls/create",
+        name: "create-payroll",
+        component: () => import("../../views/payrolls/CreatePayroll.vue"),
+        meta: {
+            middleware: [AuthMiddleware, FinanceMiddleware],
+            name_page: "payrolls",
+            title: "Create Payroll",
+        },
+    },
+    {
         path: "/payrolls/:id/edit",
         name: "edit-payroll",
         component: () => import("../../views/payrolls/EditPayroll.vue"),

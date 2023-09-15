@@ -42,7 +42,7 @@ export default {
         const payrollStore = usePayrollStore();
         const title = reactive({
             name: "Payroll",
-            link_create: null,
+            link_create: "/payrolls/create",
         });
         const navbar = reactive({
             title: "Payrolls",

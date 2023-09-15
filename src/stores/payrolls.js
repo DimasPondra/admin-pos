@@ -15,7 +15,7 @@ export const usePayrollStore = defineStore("payroll", () => {
             allowances: 0,
             tax: 0,
             net_pay: 0,
-            payment_date: 0,
+            payment_date: null,
             status: 0,
             user_id: null,
             user: {},
