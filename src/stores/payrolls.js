@@ -104,6 +104,31 @@ export const usePayrollStore = defineStore("payroll", () => {
         }
     };
 
+    const generatePDF = async (params) => {
+        try {
+            const res = await axios.get("finance/payrolls/report", {
+                params: params,
+                headers: {
+                    Authorization: authStore.token,
+                },
+                responseType: "blob",
+            });
+
+            const blob = new Blob([res.data], { type: "application/pdf" });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", "payroll-report.pdf");
+            document.body.appendChild(link);
+            link.click();
+
+            // Clean up
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     const clear = () => {
         data.payroll.id = null;
         data.payroll.role = "";
@@ -117,5 +142,5 @@ export const usePayrollStore = defineStore("payroll", () => {
         data.payroll.user = {};
     };
 
-    return { data, get, show, save };
+    return { data, get, show, generatePDF, save };
 });

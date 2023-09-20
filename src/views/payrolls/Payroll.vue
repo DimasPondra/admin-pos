@@ -4,7 +4,9 @@
 
         <div class="content">
             <div class="row">
-                <TittlePage :title="title" />
+                <TittlePage :title="title" @handleGeneratePDF="handleGeneratePDF" />
+
+                <FilterPayroll :filter="filter" @clear_filter="clearFilter" />
 
                 <div class="col-12">
                     <div class="statistics-card">
@@ -22,10 +24,11 @@
 
 <script>
 import { usePayrollStore } from "../../stores/payrolls";
-import { onMounted, computed, reactive } from "vue";
+import { onMounted, computed, reactive, watch } from "vue";
 import { useRoute } from "vue-router";
 
 import Navbar from "../../components/Navbar.vue";
+import FilterPayroll from "../../components/filters/FilterPayroll.vue";
 import Pagination from "../../components/Pagination.vue";
 import TablePayroll from "../../components/tables/TablePayroll.vue";
 import TittlePage from "../../components/TittlePage.vue";
@@ -33,6 +36,7 @@ import TittlePage from "../../components/TittlePage.vue";
 export default {
     components: {
         Navbar,
+        FilterPayroll,
         Pagination,
         TablePayroll,
         TittlePage,
@@ -43,6 +47,13 @@ export default {
         const title = reactive({
             name: "Payroll",
             link_create: "/payrolls/create",
+            generate: true,
+        });
+        const filter = reactive({
+            name: "",
+            status: "",
+            month: "",
+            year: "",
         });
         const navbar = reactive({
             title: "Payrolls",
@@ -51,11 +62,30 @@ export default {
 
         const params = computed(() => {
             return {
+                name: filter.name,
+                status: filter.status,
+                month: filter.month,
+                year: filter.year,
                 include: "user",
                 page: payrollStore.data.pagination.page,
                 per_page: payrollStore.data.pagination.per_page,
             };
         });
+
+        const PDFParams = computed(() => {
+            return {
+                month: filter.month,
+                year: filter.year,
+            };
+        });
+
+        watch(
+            () => filter,
+            () => {
+                loadPayrolls(1);
+            },
+            { deep: true }
+        );
 
         const loadPayrolls = async (value) => {
             params.value.page = value != null ? value : params.value.page;
@@ -68,11 +98,22 @@ export default {
             loadPayrolls();
         });
 
+        const clearFilter = () => {
+            filter.name = "";
+            filter.status = "";
+            filter.month = "";
+            filter.year = "";
+        };
+
         const changePage = async (value) => {
             await loadPayrolls(value);
         };
 
-        return { payrollStore, title, navbar, changePage };
+        const handleGeneratePDF = async () => {
+            await payrollStore.generatePDF(PDFParams.value);
+        };
+
+        return { payrollStore, title, filter, navbar, clearFilter, changePage, handleGeneratePDF };
     },
 };
 </script>
