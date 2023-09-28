@@ -38,6 +38,7 @@ import {
     faPlus,
     faMinus,
     faFileInvoice,
+    faUserGear,
 } from "@fortawesome/free-solid-svg-icons";
 
 library.add(
@@ -58,7 +59,8 @@ library.add(
     faFileInvoiceDollar,
     faPlus,
     faMinus,
-    faFileInvoice
+    faFileInvoice,
+    faUserGear
 );
 
 const app = createApp(App);

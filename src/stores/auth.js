@@ -1,6 +1,6 @@
 import axios from "axios";
 import { defineStore } from "pinia";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import SecureLS from "secure-ls";
 import router from "../router";
 import { useAlertStore } from "./alerts";
@@ -15,6 +15,15 @@ export const useAuthStore = defineStore(
     () => {
         const token = ref("");
         const ability = ref("");
+        const data = reactive({
+            profile: {
+                id: null,
+                username: "",
+                role: {},
+                file: {},
+                payrolls: [],
+            },
+        });
 
         const alertStore = useAlertStore();
 
@@ -51,12 +60,52 @@ export const useAuthStore = defineStore(
             }
         };
 
+        const show = async (params) => {
+            clear();
+
+            try {
+                const res = await axios.get("auth/show", {
+                    params: params,
+                    headers: {
+                        Authorization: token.value,
+                    },
+                });
+
+                data.profile = res.data.data;
+                data;
+            } catch (error) {
+                alertStore.handleError(error);
+            }
+        };
+
+        const changePassword = async (data) => {
+            try {
+                await axios.patch("auth/change-password", data, {
+                    headers: {
+                        Authorization: token.value,
+                    },
+                });
+
+                alertStore.handleSuccess("change password successfully.");
+            } catch (error) {
+                alertStore.handleError(error);
+            }
+        };
+
         const $reset = () => {
             token.value = null;
             ability.value = null;
         };
 
-        return { token, ability, login, logout, $reset };
+        const clear = () => {
+            data.profile.id = null;
+            data.profile.username = "";
+            data.profile.role = {};
+            data.profile.file = {};
+            data.profile.payrolls = [];
+        };
+
+        return { token, ability, data, login, logout, show, changePassword, $reset };
     },
     {
         persist: [

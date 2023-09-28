@@ -13,6 +13,7 @@ import Purchase from "./routes/purchases";
 import Payroll from "./routes/payrolls";
 import Cart from "./routes/carts";
 import Transaction from "./routes/transactions";
+import AccountProfile from "./routes/account-profiles";
 
 import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
@@ -58,6 +59,7 @@ const router = createRouter({
         ...Payroll,
         ...Cart,
         ...Transaction,
+        ...AccountProfile,
     ],
 });
 
