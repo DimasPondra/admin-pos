@@ -94,7 +94,7 @@ export default {
         };
 
         onMounted(() => {
-            document.title = `Admin Panel - ${route.meta.title}`;
+            document.title = `Finance Panel - ${route.meta.title}`;
             loadPayrolls();
         });
 

@@ -107,6 +107,15 @@
 
             <h5 class="sidebar-title">Others</h5>
 
+            <router-link
+                to="/account-profiles"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'account-profiles' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-user-gear" />
+                <span>Account Profile</span>
+            </router-link>
+
             <button @click="handleLogout" class="sidebar-item border-0">
                 <font-awesome-icon icon="fa-solid fa-arrow-right-from-bracket" />
                 <span>Logout</span>

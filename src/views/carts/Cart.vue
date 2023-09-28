@@ -79,14 +79,17 @@ import Navbar from "../../components/Navbar.vue";
 import { reactive, onMounted, computed, watch } from "vue";
 import { useProductStore } from "../../stores/products";
 import { useCartStore } from "../../stores/carts";
-import Pagination from "../../components/Pagination.vue";
-import FilterProduct from "../../components/filters/FilterProduct.vue";
+import { useRoute } from "vue-router";
 import { useProductTypeStore } from "../../stores/product-types";
 import { useTransactionStore } from "../../stores/transactions";
+
+import Pagination from "../../components/Pagination.vue";
+import FilterProduct from "../../components/filters/FilterProduct.vue";
 
 export default {
     components: { Navbar, Pagination, FilterProduct },
     setup() {
+        const route = useRoute();
         const productStore = useProductStore();
         const cartStore = useCartStore();
         const productTypeStore = useProductTypeStore();
@@ -188,6 +191,7 @@ export default {
         };
 
         onMounted(() => {
+            document.title = `Cashier Panel - ${route.meta.title}`;
             loadProducts();
             loadProductTypes();
             loadCarts();
