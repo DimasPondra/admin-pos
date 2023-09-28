@@ -36,7 +36,7 @@ export const useAuthStore = defineStore(
                 if (ability.value == "admin") {
                     router.push("/");
                 } else if (ability.value == "finance") {
-                    router.push("/purchases");
+                    router.push("/dashboard-finance");
                 } else if (ability.value == "cashier") {
                     router.push("/carts");
                 }
