@@ -12,6 +12,17 @@
                 </button>
             </router-link>
 
+            <h5 class="sidebar-title">Daily Use</h5>
+
+            <router-link
+                to="/dashboard-finance"
+                class="sidebar-item"
+                :class="route.meta.name_page == 'dashboard-finance' ? 'active' : ''"
+            >
+                <font-awesome-icon icon="fa-solid fa-house" />
+                <span>Overview</span>
+            </router-link>
+
             <h5 class="sidebar-title">Purchase</h5>
 
             <router-link

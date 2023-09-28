@@ -19,6 +19,7 @@ import VueRouteMiddleware from "vue-route-middleware";
 import AuthMiddleware from "../middleware/auth";
 import GuestMiddleware from "../middleware/guest";
 import AdminMiddleware from "../middleware/admin";
+import FinanceMiddleware from "../middleware/finance";
 
 const router = createRouter({
     scrollBehavior(to, from, savedPosition) {
@@ -34,6 +35,16 @@ const router = createRouter({
                 middleware: [AuthMiddleware, AdminMiddleware],
                 name_page: "dashboard",
                 title: "Dashboard",
+            },
+        },
+        {
+            path: "/dashboard-finance",
+            name: "dashboard-finance",
+            component: () => import("../views/Finance.vue"),
+            meta: {
+                middleware: [AuthMiddleware, FinanceMiddleware],
+                name_page: "dashboard-finance",
+                title: "Dashboard Finance",
             },
         },
         {
