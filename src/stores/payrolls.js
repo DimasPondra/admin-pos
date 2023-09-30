@@ -111,21 +111,17 @@ export const usePayrollStore = defineStore("payroll", () => {
                 headers: {
                     Authorization: authStore.token,
                 },
-                responseType: "blob",
             });
 
-            const blob = new Blob([res.data], { type: "application/pdf" });
-            const url = window.URL.createObjectURL(blob);
             const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", "payroll-report.pdf");
-            document.body.appendChild(link);
+            link.href = res.data.data.pdf_url;
+            link.download = "payroll_report.pdf";
+            link.target = "_blank";
             link.click();
 
-            // Clean up
-            window.URL.revokeObjectURL(url);
+            alertStore.handleSuccess("Generate PDF successfully.");
         } catch (error) {
-            console.log(error);
+            alertStore.handleError(error);
         }
     };
 
