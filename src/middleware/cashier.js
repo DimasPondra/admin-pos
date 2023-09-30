@@ -4,7 +4,7 @@ export default (to, from, next) => {
     let authStore = useAuthStore();
 
     if (authStore.ability == "finance") {
-        next({ name: "purchase" });
+        next({ name: "dashboard-finance" });
         return false;
     } else if (authStore.ability == "admin") {
         next({ name: "home" });
