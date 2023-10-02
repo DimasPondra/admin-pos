@@ -45,15 +45,33 @@
                 </div>
 
                 <div class="col-12 col-md-4">
-                    <div class="card">
+                    <div class="card text-bg-light">
                         <div class="card-body">
-                            income
-                            <br />
-                            expense
+                            <div class="mb-3">
+                                <span>Income</span>
+                                <h5 class="text-success">{{ adminDashboardStore.data.total.income }}</h5>
+                            </div>
+                            <div class="">
+                                <span>Expense</span>
+                                <h5 class="text-danger">
+                                    {{ adminDashboardStore.data.total.expense }}
+                                </h5>
+                            </div>
                         </div>
                     </div>
-                    <div class="card mt-3">
-                        <div class="card-body">payroll setting</div>
+                    <div class="card text-bg-light mt-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-6">
+                                    <span>Allowances</span>
+                                    <h3>{{ allowances }}</h3>
+                                </div>
+                                <div class="col-6">
+                                    <span>Tax</span>
+                                    <h3>{{ tax }}</h3>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -92,6 +110,38 @@ export default {
             };
         });
 
+        const allowances = computed(() => {
+            let value = "";
+
+            adminDashboardStore.data.payroll_setting.forEach((element) => {
+                if (element.name == "allowances") {
+                    value = element.nominal;
+
+                    if (element.unit_type == "percent") {
+                        value += " %";
+                    }
+                }
+            });
+
+            return value;
+        });
+
+        const tax = computed(() => {
+            let value = "";
+
+            adminDashboardStore.data.payroll_setting.forEach((element) => {
+                if (element.name == "tax") {
+                    value = element.nominal;
+
+                    if (element.unit_type == "percent") {
+                        value += " %";
+                    }
+                }
+            });
+
+            return value;
+        });
+
         watch(
             () => filter.year,
             () => {
@@ -108,7 +158,7 @@ export default {
             loadData();
         });
 
-        return { navbar, filter, adminDashboardStore };
+        return { navbar, filter, adminDashboardStore, allowances, tax };
     },
 };
 </script>
