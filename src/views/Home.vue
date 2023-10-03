@@ -4,6 +4,14 @@
 
         <div class="content pb-5">
             <div class="row">
+                <div class="col-12 col-md-3">
+                    <div class="input-group mb-3">
+                        <input type="number" class="form-control" id="year" v-model="filter.year" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
                 <div class="col-12 col-md-8">
                     <div class="card" style="max-height: 250px; overflow-y: scroll">
                         <div class="card-body">
