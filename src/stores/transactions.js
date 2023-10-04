@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import { reactive } from "vue";
+import { handleError, reactive } from "vue";
 import { useAuthStore } from "./auth";
 import { useAlertStore } from "./alerts";
 import axios from "axios";
@@ -18,7 +18,7 @@ export const useTransactionStore = defineStore("transaction", () => {
         pagination: {
             page: 1,
             total: 0,
-            per_page: 1,
+            per_page: 10,
             option: {
                 chunk: 3,
                 chunksNavigation: "scroll",
@@ -86,6 +86,26 @@ export const useTransactionStore = defineStore("transaction", () => {
         }
     };
 
+    const generatePDF = async (id) => {
+        try {
+            const res = await axios.get(`admin/transactions/${id}/export`, {
+                headers: {
+                    Authorization: authStore.token,
+                },
+            });
+
+            const link = document.createElement("a");
+            link.href = res.data.data.pdf_url;
+            link.download = "transaction_report.pdf";
+            link.target = "_blank";
+            link.click();
+
+            alertStore.handleSuccess("Generate PDF successfully.");
+        } catch (error) {
+            alertStore.handleError(error);
+        }
+    };
+
     const clear = () => {
         data.transaction.id = null;
         data.transaction.sub_total = 0;
@@ -94,5 +114,5 @@ export const useTransactionStore = defineStore("transaction", () => {
         data.transaction.details = [];
     };
 
-    return { data, get, show, save };
+    return { data, get, show, save, generatePDF };
 });

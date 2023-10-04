@@ -35,19 +35,20 @@
                     <h2 class="content-title mb-4">Products</h2>
                 </div>
 
-                <div class="col-12 statistics-card pt-1">
-                    <div
-                        class="col-12 col-md-3 card"
-                        v-for="detail in transactionStore.data.transaction.details"
-                        :key="detail.id"
-                    >
+                <div
+                    class="col-12 col-md-3"
+                    v-for="detail in transactionStore.data.transaction.details"
+                    :key="detail.id"
+                >
+                    <div class="card mb-4">
                         <div class="card-body">
                             <h6 class="card-title mb-0">{{ detail.product.name }}</h6>
                         </div>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item">Rp {{ detail.price }}</li>
                             <li class="list-group-item">
-                                {{ detail.amount }} <span v-if="detail.amount > 1">items</span> <span v-else>item</span>
+                                {{ detail.amount }} <span v-if="detail.amount > 1">items</span>
+                                <span v-else>item</span>
                             </li>
                         </ul>
                     </div>
