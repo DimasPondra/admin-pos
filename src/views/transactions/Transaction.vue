@@ -51,6 +51,7 @@ export default {
 
         const params = computed(() => {
             return {
+                include: "user,details,product",
                 page: transactionStore.data.pagination.page,
                 per_page: transactionStore.data.pagination.per_page,
             };
