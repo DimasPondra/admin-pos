@@ -19,9 +19,9 @@
                                 :key="product.id"
                             >
                                 <div class="card">
-                                    <img src="@/assets/logo.svg" class="card-img-top image" alt="image" />
+                                    <img :src="product.file.url" class="card-img-top image" alt="product-image" />
                                     <div class="card-body">
-                                        <h6 class="card-title">{{ product.name }}</h6>
+                                        <h6 class="card-title text-nowrap overflow-hidden">{{ product.name }}</h6>
                                         <small>
                                             <p class="card-text">Rp {{ product.price }}</p>
                                         </small>
@@ -111,6 +111,7 @@ export default {
 
         const productParams = computed(() => {
             return {
+                include: "file",
                 name: filter.name,
                 product_type_id: filter.product_type_id,
                 page: productStore.data.pagination.page,
