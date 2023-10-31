@@ -1,9 +1,9 @@
 <template>
-    <div class="row d-flex justify-content-center h-100 mt-5">
+    <div class="row d-flex justify-content-center vh-100 pt-5">
         <div class="col-10 col-md-6 col-lg-4">
             <div class="alert alert-warning" role="alert">
                 <h5>Account !</h5>
-                <p class="mb-0"><small>Username: admin</small></p>
+                <p class="mb-0"><small>Username: admin / finance / cashier</small></p>
                 <p class="mb-0"><small>Password: secret</small></p>
             </div>
             <div class="statistics-card">

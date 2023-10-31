@@ -3,7 +3,7 @@
         <aside class="sidebar">
             <router-link to="" class="sidebar-logo">
                 <div class="d-flex justify-content-start align-items-center">
-                    <img src="" alt="logo" />
+                    <img src="../assets/cashier_icon.png" alt="logo" width="40" />
                     <span>Cashier Panel</span>
                 </div>
 
